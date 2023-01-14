@@ -44,7 +44,9 @@ image: maven:latest
 stages:
   - build
 
-build:
+build server:
+  stage:
+    build
   script:
     - mvn clean install
   artifacts:
