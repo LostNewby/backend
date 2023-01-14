@@ -1,21 +1,4 @@
-variables:
-  # `showDateTime` will show the passed time in milliseconds. You need to specify `--batch-mode` to make this work.
-  MAVEN_OPTS: >-
-    -Dhttps.protocols=TLSv1.2
-    -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
-    -Dorg.slf4j.simpleLogger.showDateTime=true
-    -Djava.awt.headless=true
-
-  MAVEN_CLI_OPTS: >-
-    --batch-mode
-    --errors
-    --fail-at-end
-    --show-version
-    -DinstallAtEnd=true
-    -DdeployAtEnd=true
-
 image: maven:3.8.5-eclipse-temurin-17-alpine
-
 
 stages:
   - build
@@ -28,10 +11,15 @@ build server:
     paths:
       - target/backend-0.0.1-SNAPSHOT.jar
 
-# Cache downloaded dependencies and plugins between builds.
-# To keep cache across branches add 'key: "$CI_JOB_NAME"'
-# Be aware that `mvn deploy` will install the built jar into this repository. If you notice your cache size
-# increasing, consider adding `-Dmaven.install.skip=true` to `MAVEN_OPTS` or in `.mvn/maven.config`
+store to s3:
+  stage: store
+  image:
+    name: amazon/aws-cli:2.9.15
+    entrypoint: [""]
+  script:
+    - echo "j" > test.txt
+    - aws s3 cp test.txt s3://$AWS_S3_BUCKET/test.txt
+
 cache:
   paths:
     - .m2/repository
