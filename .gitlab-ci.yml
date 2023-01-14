@@ -20,7 +20,7 @@ variables:
     -DinstallAtEnd=true
     -DdeployAtEnd=true
 
-image: maven:latest
+image: maven:3.8.3-openjdk-17
 
 stages:
   - build
