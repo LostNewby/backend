@@ -45,8 +45,7 @@ stages:
   - build
 
 build server:
-  stage:
-    build
+  stage: build
   script:
     - mvn clean install
   artifacts:
