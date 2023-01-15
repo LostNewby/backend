@@ -1,0 +1,14 @@
+server:
+  port: 5001
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/aulfood
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
