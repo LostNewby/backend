@@ -47,8 +47,8 @@ deploy:
     - aws s3 cp target/backend-0.0.1-SNAPSHOT.jar s3://$AWS_S3_BUCKET/backend-$APP_VERSION-SNAPSHOT.jar
     - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID_DEPLOY
     - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY_DEPLOY
-    - aws elasticbeanstalk create-application-version --application-name "Natural Goods" --version-label $APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key="backend-${APP_VERSION}.jar"
-    - aws elasticbeanstalk update-environment --application-name "Natural Goods" --environment-name Naturalgoods-env --version-label $APP_VERSION
+    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_DEPLOY AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_DEPLOY aws elasticbeanstalk create-application-version --application-name "Natural Goods" --version-label $APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key="backend-${APP_VERSION}.jar"
+    - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_DEPLOY AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_DEPLOY aws elasticbeanstalk update-environment --application-name "Natural Goods" --environment-name Naturalgoods-env --version-label $APP_VERSION
 
 
 cache:
