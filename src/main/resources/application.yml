@@ -1,5 +1,5 @@
 server:
-  port: 5002
+  port: 5000
 spring:
   datasource:
     url: jdbc:postgresql://naturalgoods.cr5uqxzufnns.us-east-1.rds.amazonaws.com:3306/postgres
