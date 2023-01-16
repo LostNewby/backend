@@ -11,6 +11,6 @@ public class Welcome {
 
     @GetMapping
     public String defultPage() {
-        return "Natural Goods webserver is successfully deployed!";
+        return "Natural Goods webserver is successfully deployed! This is good";
     }
 }
