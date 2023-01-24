@@ -12,6 +12,8 @@ public class Account {
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "account_sequence"
+             
+             
     )
     private Long id;
     private String name;
