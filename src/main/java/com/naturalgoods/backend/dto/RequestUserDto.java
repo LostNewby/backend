@@ -38,7 +38,4 @@ public class RequestUserDto {
     @Pattern(regexp = "^[0-9]{12}$", message = "iin should be valid")
     private String iin;
 
-    private boolean active = true;
-
-    private Long orgId;
 }
