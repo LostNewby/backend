@@ -9,7 +9,7 @@ variables:
   APP_VERSION: $CI_PIPELINE_ID
 
 
-image: maven:3.8.5-eclipse-temurin-17-alpine
+image: maven:3.8.4-eclipse-temurin-11-alpine
 
 stages:
   - build
