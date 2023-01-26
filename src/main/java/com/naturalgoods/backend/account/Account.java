@@ -1,6 +1,6 @@
 package com.naturalgoods.backend.account;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Data;
 
 @Data

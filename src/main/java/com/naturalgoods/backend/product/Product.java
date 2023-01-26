@@ -1,8 +1,9 @@
 package com.naturalgoods.backend.product;
 
-import jakarta.persistence.*;
+
 import lombok.Data;
 
+import javax.persistence.*;
 import java.util.UUID;
 
 @Data
