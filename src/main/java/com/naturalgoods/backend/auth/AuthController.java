@@ -6,10 +6,11 @@ import com.naturalgoods.backend.api.ApiResponse;
 import com.naturalgoods.backend.dto.RequestUserDto;
 import com.naturalgoods.backend.util.JwtRequest;
 import com.naturalgoods.backend.util.JwtResponse;
-import jakarta.security.auth.message.AuthException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.security.auth.message.AuthException;
 
 @RestController
 @RequestMapping(path = "api/auth")
@@ -19,7 +20,7 @@ public class AuthController {
     private final AuthService authService;
 
 
-    @PostMapping("/login")
+    @PostMapping("login")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest authRequest) {
         try {
             final JwtResponse token = authService.login(authRequest);

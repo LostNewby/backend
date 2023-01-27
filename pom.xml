@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.1</version>
+		<version>2.7.8</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.naturalgoods</groupId>
@@ -14,12 +14,13 @@
 	<name>backend</name>
 	<description>Back-end for Natural Goods</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>11</java.version>
 		<jwt.version>0.11.5</jwt.version>
 		<hiber-types.version>2.16.2</hiber-types.version>
 		<jaxb.version>2.4.0-b180830.0359</jaxb.version>
 		<annotation-api.version>1.3.2</annotation-api.version>
 		<validation-api.version>2.0.1.Final</validation-api.version>
+		<hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -52,11 +53,17 @@
 			<artifactId>aws-java-sdk</artifactId>
 			<version>1.12.336</version>
 		</dependency>
-
+<!--		/////////////////////////////////////////////////////////////////////////-->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>${validation-api.version}</version>
+		</dependency>
+
+		<!-- Fly way -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
 		</dependency>
 
 		<dependency>
@@ -84,10 +91,17 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Fly way -->
 		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>${jwt.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.vladmihalcea</groupId>
+			<artifactId>hibernate-types-52</artifactId>
+			<version>${hiber-types.version}</version>
 		</dependency>
 
 		<dependency>
@@ -95,12 +109,10 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>${jaxb.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-
 	</dependencies>
 
 	<build>

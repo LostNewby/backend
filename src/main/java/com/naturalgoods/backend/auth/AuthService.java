@@ -1,6 +1,5 @@
 package com.naturalgoods.backend.auth;
 
-import com.naturalgoods.backend.account.BaseUserEntity;
 import com.naturalgoods.backend.account.UserEntity;
 import com.naturalgoods.backend.account.UserRepository;
 import com.naturalgoods.backend.dto.RequestUserDto;
@@ -9,13 +8,16 @@ import com.naturalgoods.backend.util.JwtRequest;
 import com.naturalgoods.backend.util.JwtResponse;
 import com.naturalgoods.backend.util.PasswordUtils;
 import io.jsonwebtoken.Claims;
-import jakarta.security.auth.message.AuthException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.message.AuthException;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor

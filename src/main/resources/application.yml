@@ -26,6 +26,6 @@ spring:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
 
-jwtSecret: 3K4N6P7Q9SATBVDWEXGZH2J3M5N6P8R9SAUCVDWFYGZH3K4M5P7Q8RATBU
+jwtSecret: DCB38ABF33FA35ADF189F3C1476E4E2B111D78664224DACDC845F82357
 jwtExpirationMs: 9000000
 jwtRefreshExpirationMs: 86400000

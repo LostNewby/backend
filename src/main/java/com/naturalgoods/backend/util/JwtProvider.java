@@ -1,6 +1,5 @@
 package com.naturalgoods.backend.util;
 
-import com.naturalgoods.backend.account.BaseUserEntity;
 import com.naturalgoods.backend.account.UserEntity;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -33,7 +32,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject(userEntity.getFirstName())
                 .setExpiration(accessExpiration)
-                .claim("id", ((BaseUserEntity) userEntity).getId())
+                .claim("id", userEntity.getId())
                 .claim("firstName", userEntity.getFirstName())
                 .claim("lastName", userEntity.getLastName())
                 .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret)))

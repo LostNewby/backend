@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests(
                         authorizedUrl -> authorizedUrl
-                                .requestMatchers(
+                                .antMatchers(
                                         "/api/auth/**",
                                         "/api/external/**",
                                         "/swagger-ui.html/**",
@@ -44,13 +44,13 @@ public class SecurityConfig {
                                         "/swagger-resources/**",
                                         "/v2/api-docs",
                                         "/webjars/**").permitAll()
-                                .requestMatchers("/health", "/health/readiness", "/health/liveness", "/info").permitAll()
+                                .antMatchers("/health", "/health/readiness", "/health/liveness", "/info").permitAll()
                                 .anyRequest().authenticated()
                                 .and()
                                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 
 
-                )  .exceptionHandling()
+                ).exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and().build();
     }

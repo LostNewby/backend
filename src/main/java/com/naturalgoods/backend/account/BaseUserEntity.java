@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -12,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @MappedSuperclass
 public class BaseUserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,5 +43,4 @@ public class BaseUserEntity {
 
     @Column(name = "is_temp")
     private boolean isTemp = false;
-
 }
