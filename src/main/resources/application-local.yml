@@ -1,0 +1,7 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/senior_project
+    username: postgres
+    password: 26062001
