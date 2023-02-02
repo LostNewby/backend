@@ -12,7 +12,7 @@ import javax.mail.internet.MimeMessage;
 @Service
 @Slf4j
 public class EmailService {
-    @Value("${mail}")
+    @Value("${mail.username}")
     private String fromMail;
 
     @Autowired
