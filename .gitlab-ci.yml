@@ -18,6 +18,7 @@ stages:
 build server:
   stage: build
   script:
+    - echo $CI_PIPELINE_SOURCE
     - mvn install
   artifacts:
     paths:
