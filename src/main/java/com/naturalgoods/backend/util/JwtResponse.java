@@ -12,7 +12,6 @@ public class JwtResponse {
     private String accessToken;
     private String refreshToken;
     private String msg;
-    private boolean needToChangePassword = false;
 
     public JwtResponse(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
@@ -23,12 +22,6 @@ public class JwtResponse {
         JwtResponse authResult = new JwtResponse();
         authResult.setMsg(msg);
         authResult.setSuccess(false);
-        return authResult;
-    }
-
-    public static JwtResponse needChangePwd() {
-        JwtResponse authResult = new JwtResponse();
-        authResult.setNeedToChangePassword(true);
         return authResult;
     }
 }

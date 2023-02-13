@@ -27,7 +27,24 @@ public class EmailService {
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(fromMail);
-            helper.setSubject("Временный пароля");
+            helper.setSubject("Пароль");
+            helper.setTo(email);
+            message.setText(text);
+            emailSender.send(message);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    public void sendBanNotice(String name, String email) {
+        String text = "Добрый день, " + name + "! \n" +
+                "  \n" +
+                "Вы были добавлены в черный список AulFood!\n";
+        try {
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(fromMail);
+            helper.setSubject("Черный список");
             helper.setTo(email);
             message.setText(text);
             emailSender.send(message);
