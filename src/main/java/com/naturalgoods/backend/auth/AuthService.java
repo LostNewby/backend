@@ -60,12 +60,19 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(password));
         user.setActive(true);
 
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.add(Calendar.DATE, 1);
-
         user=userRepository.save(user);
 
         emailService.sendNewPassword(user.getFirstName(), password, user.getEmail());
+    }
+
+    public void changeUserInfo(RequestUserDto userInfo) throws Exception {
+        UserEntity user = userRepository.findByEmail(SecurityUtils.getAuthInfo().getUsername()).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
+
+        user.setFirstName(userInfo.getFirstName());
+        user.setLastName(userInfo.getLastName());
+        user.setPhoneNumber(userInfo.getPhoneNumber());
+
+        userRepository.save(user);
     }
 
     public void forgotPassword(String detail) throws AuthException {

@@ -40,6 +40,16 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/changeUserInfo")
+    public ResponseEntity<ApiResponse> changeUserInfo(@RequestBody RequestUserDto userInfo) {
+        try {
+            authService.changeUserInfo(userInfo);
+            return ResponseEntity.ok(ApiEmptyResponse.create());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiErrorResponse.create(e.getMessage()));
+        }
+    }
+
     @PostMapping("/forgotPassword")
     public ResponseEntity<ApiResponse> forgotPassword(@RequestParam String mail) {
         try {
@@ -68,6 +78,17 @@ public class AuthController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiErrorResponse.create(e.getMessage()));
         }
+    }
+
+    @PostMapping("token")
+    public ResponseEntity<JwtResponse> getNewAccessToken(@RequestParam String refreshToken) {
+        final JwtResponse token;
+        try {
+            token = authService.getAccessToken(refreshToken);
+        } catch (AuthException e) {
+            return ResponseEntity.badRequest().body(JwtResponse.failed(e.getMessage()));
+        }
+        return ResponseEntity.ok(token);
     }
 
 }
