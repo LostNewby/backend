@@ -13,7 +13,7 @@ public final class JwtUtils {
     public static JwtAuthentication generate(Claims claims) {
         final JwtAuthentication jwtInfoToken = new JwtAuthentication();
         jwtInfoToken.setFirstName(claims.get("firstName", String.class));
-        jwtInfoToken.setUsername(claims.getSubject());
+        jwtInfoToken.setUsername(claims.get("email", String.class));
         if (jwtInfoToken.getDetails() instanceof Map) {
             ((Map<String, Object>) jwtInfoToken.getDetails()).put("id", claims.get("id", Long.class));
         }

@@ -33,6 +33,7 @@ public class JwtProvider {
                 .setSubject(userEntity.getFirstName())
                 .setExpiration(accessExpiration)
                 .claim("id", userEntity.getId())
+                .claim("email", userEntity.getEmail())
                 .claim("firstName", userEntity.getFirstName())
                 .claim("lastName", userEntity.getLastName())
                 .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret)))

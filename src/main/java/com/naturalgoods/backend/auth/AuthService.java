@@ -5,10 +5,7 @@ import com.naturalgoods.backend.account.UserRepository;
 import com.naturalgoods.backend.auth.email.EmailService;
 import com.naturalgoods.backend.dto.RequestUserDto;
 import com.naturalgoods.backend.mappers.RequestUserMapper;
-import com.naturalgoods.backend.util.JwtProvider;
-import com.naturalgoods.backend.util.JwtRequest;
-import com.naturalgoods.backend.util.JwtResponse;
-import com.naturalgoods.backend.util.PasswordUtils;
+import com.naturalgoods.backend.util.*;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +27,10 @@ public class AuthService {
 
     public JwtResponse login(@NotNull JwtRequest authRequest) throws AuthException {
         UserEntity user = userRepository.findByEmail(authRequest.getLogin()).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
+
+        if(!user.isActive()){
+            throw new AuthException("Вы в черном списке!!!");
+        }
 
         if (passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
             final String accessToken = jwtProvider.generateAccessToken(user);
@@ -76,6 +77,24 @@ public class AuthService {
         user=userRepository.save(user);
 
         emailService.sendNewPassword(user.getFirstName(), password, user.getEmail());
+    }
+
+    public void changePassword(String password) throws AuthException {
+        UserEntity user = userRepository.findByEmail(SecurityUtils.getAuthInfo().getUsername()).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
+
+        user.setPassword(passwordEncoder.encode(password));
+
+        userRepository.save(user);
+    }
+
+    public void blackList(String detail) throws AuthException {
+        UserEntity user = userRepository.findByEmailOrPhoneNumber(detail).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
+
+        user.setActive(false);
+
+        user=userRepository.save(user);
+
+        emailService.sendBanNotice(user.getFirstName(), user.getEmail());
     }
 
     public JwtResponse getAccessToken(@NotNull String refreshToken) throws AuthException {

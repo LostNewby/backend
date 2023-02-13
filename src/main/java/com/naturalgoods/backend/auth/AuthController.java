@@ -41,9 +41,29 @@ public class AuthController {
     }
 
     @PostMapping("/forgotPassword")
-    public ResponseEntity<ApiResponse> forgotPassword(@RequestBody String mail) {
+    public ResponseEntity<ApiResponse> forgotPassword(@RequestParam String mail) {
         try {
             authService.forgotPassword(mail);
+            return ResponseEntity.ok(ApiEmptyResponse.create());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiErrorResponse.create(e.getMessage()));
+        }
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<ApiResponse> changePassword(@RequestParam String password) {
+        try {
+            authService.changePassword(password);
+            return ResponseEntity.ok(ApiEmptyResponse.create());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiErrorResponse.create(e.getMessage()));
+        }
+    }
+
+    @PostMapping("/blackListUser")
+    public ResponseEntity<ApiResponse> banUser(@RequestParam String email) {
+        try {
+            authService.blackList(email);
             return ResponseEntity.ok(ApiEmptyResponse.create());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiErrorResponse.create(e.getMessage()));
