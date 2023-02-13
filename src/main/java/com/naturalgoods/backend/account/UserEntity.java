@@ -25,9 +25,6 @@ public class UserEntity extends BaseUserEntity {
     private boolean active;
 
     @Column
-    private String iin;
-
-    @Column
     private String role;
 
     @Column(name = "phone_number")
