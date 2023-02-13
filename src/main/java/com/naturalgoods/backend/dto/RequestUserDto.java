@@ -29,8 +29,4 @@ public class RequestUserDto {
     @Pattern(regexp = "^7[0-9]{10}$", message = "Phone should be valid")
     private String phoneNumber;
 
-    @NotNull(message = "iin cannot be empty")
-    @Pattern(regexp = "^[0-9]{12}$", message = "iin should be valid")
-    private String iin;
-
 }

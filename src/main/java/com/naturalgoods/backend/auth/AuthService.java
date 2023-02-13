@@ -45,7 +45,7 @@ public class AuthService {
     }
 
     public void registration(RequestUserDto userDto) throws Exception {
-        Optional<UserEntity> userValidation = userRepository.findByEmailOrPhoneNumberOrIin(userDto.getEmail());
+        Optional<UserEntity> userValidation = userRepository.findByEmailOrPhoneNumber(userDto.getEmail());
 
         if(userValidation.isPresent()){
             throw new Exception("Пользователь с данными уже зарегистрирован в системе");
@@ -58,11 +58,9 @@ public class AuthService {
         String password = PasswordUtils.getPassword(8);
         user.setPassword(passwordEncoder.encode(password));
         user.setActive(true);
-        user.setTemp(true);
 
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.add(Calendar.DATE, 1);
-        user.setTempPwdExpireDte(calendar.getTime());
 
         user=userRepository.save(user);
 
@@ -70,15 +68,10 @@ public class AuthService {
     }
 
     public void forgotPassword(String detail) throws AuthException {
-        UserEntity user = userRepository.findByEmailOrPhoneNumberOrIin(detail).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
+        UserEntity user = userRepository.findByEmailOrPhoneNumber(detail).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
 
         String password = PasswordUtils.getPassword(8);
         user.setPassword(passwordEncoder.encode(password));
-        user.setTemp(true);
-
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.add(Calendar.DATE, 1);
-        user.setTempPwdExpireDte(calendar.getTime());
 
         user=userRepository.save(user);
 

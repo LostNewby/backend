@@ -25,18 +25,6 @@ public class BaseUserEntity {
     @Column
     private String password;
 
-    @Column(name = "temp_pwd_expire_date")
-    private Date tempPwdExpireDte;
-
     @Column
     private String token;
-
-    @Column(name = "created_date")
-    private Date createdDate = new Date();
-
-    @Column(name = "last_auth_date")
-    private Date lastAuthDate;
-
-    @Column(name = "is_temp")
-    private boolean isTemp = false;
 }
