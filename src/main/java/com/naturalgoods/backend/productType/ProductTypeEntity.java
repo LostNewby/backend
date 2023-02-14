@@ -16,8 +16,14 @@ public class ProductTypeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    String name;
+    @Column(name = "name_kz")
+    String nameKz;
+
+    @Column(name = "name_ru")
+    String nameRu;
+
+    @Column(name = "name_en")
+    String nameEn;
 
     @Column
     Long productId;
