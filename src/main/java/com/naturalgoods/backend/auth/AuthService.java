@@ -26,7 +26,7 @@ public class AuthService {
     private final EmailService emailService;
 
     public JwtResponse login(@NotNull JwtRequest authRequest) throws AuthException {
-        UserEntity user = userRepository.findByEmail(authRequest.getLogin()).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
+        UserEntity user = userRepository.findByEmailOrPhoneNumber(authRequest.getLogin()).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
 
         if(!user.isActive()){
             throw new AuthException("Вы в черном списке!!!");
