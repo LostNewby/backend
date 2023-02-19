@@ -1,0 +1,39 @@
+Categories:
+  Fruits:
+    Apple:
+      Gala
+      Golden delicious
+      Red delicious
+      Granny smith
+      Fuji
+    Banana
+    Lemon
+    Orange
+    Berries
+    Pear
+    Apricot
+    Peach
+    Plum
+  Vegetables:
+    Tomato
+    Cucumber
+    Potato
+    Onion
+    Garlic
+    Carrot
+    Eggplant
+    Cabbage
+  Drinks:
+    Kumis
+    Airan
+    Shubat
+    Milk
+    Saumal
+    Kampot
+  Meats:
+    Horse meat
+    Cow meat
+    Sheep meat
+    Chicken meat
+    Fish
+    Camel Meat

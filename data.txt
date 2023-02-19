@@ -1,0 +1,75 @@
+Categories:
+  Milk products | Молочные продукты | Сүт тағамдары
+    Kumis | Кумыс | Қымыз
+      Уыз 
+      Бал
+      Бесті
+      Дөнен
+      Жуас
+      Құнан
+      Қысырақ
+      Қысырдың
+      Сары
+      Сірге жияр
+      Түнеме
+
+    Smetana (sour cream) | Сметана | Қаймақ
+      Піскен
+      Шикі
+      Бал
+      Сірне
+      Қатық
+
+    Clarified butter | Топлёное масло | Сары май
+
+    Kashk | Курут | Құрт
+      Жас құрт
+      Көбік
+      Ыстық құрт
+      Сықпа құрт
+      Малта
+      Езген құрт
+      Ақ малта
+      Ұнтақ құрт
+      Құрт-май
+      Құрт-көже
+      Ақ құрт
+      Қара құрт
+      Ежегей құрт
+      
+
+    Ayran | Айран (Кефир) | Айран
+    - Tvorog
+    - Shubat
+
+  Meat
+    - Horse meat
+      - tai
+      - baital
+    - Cow meat
+    - Deer meat
+    - Camel meat
+
+  Zagotovki na zimu
+    - Jam
+    - Ikra
+    - Adjika
+
+  Fruits, Vegetables and Zhemis
+    - Potatoes
+    - Tomatoes
+    - Pickles
+    - Kapusta
+      - Cvatnaya
+      - Belokacanaya
+      - Broccoli
+    - Ret'ka
+    - Svekla
+    - Onion
+    - Rediska 
+    - Zelen'
+    - Baklazhan
+    - Kabachki
+    - Grusha
+    - Apple
+
