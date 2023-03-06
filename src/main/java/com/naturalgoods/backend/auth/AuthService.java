@@ -24,12 +24,13 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final Map<String, String> refreshStorage = new HashMap<>();
     private final EmailService emailService;
+    private final AuthExceptions authExceptions;
 
-    public JwtResponse login(@NotNull JwtRequest authRequest) throws AuthException {
-        UserEntity user = userRepository.findByEmailOrPhoneNumber(authRequest.getLogin()).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
+    public JwtResponse login(@NotNull JwtRequest authRequest, Language language) throws AuthException {
+        UserEntity user = userRepository.findByEmailOrPhoneNumber(authRequest.getLogin()).orElseThrow(() -> authExceptions.authExceptions(language));
 
         if(!user.isActive()){
-            throw new AuthException("Вы в черном списке!!!");
+            throw authExceptions.blackList(language);
         }
 
         if (passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
@@ -39,17 +40,19 @@ public class AuthService {
 
             userRepository.save(user);
 
-            return new JwtResponse(accessToken, refreshToken);
+            JwtResponse response = new JwtResponse(accessToken, refreshToken);
+            response.setRole(user.getRole());
+            return response;
         } else {
-            throw new AuthException("Неверный пароль");
+            throw authExceptions.incorrectPassword(language);
         }
     }
 
-    public void registration(RequestUserDto userDto) throws Exception {
+    public void registration(RequestUserDto userDto, Language language) throws Exception {
         Optional<UserEntity> userValidation = userRepository.findByEmailOrPhoneNumber(userDto.getEmail());
 
         if(userValidation.isPresent()){
-            throw new Exception("Пользователь с данными уже зарегистрирован в системе");
+            throw authExceptions.alreadyExist(language);
         }
 
         UserEntity user= RequestUserMapper.MAPPER.mapToEntity(userDto);
@@ -58,6 +61,7 @@ public class AuthService {
 
         String password = PasswordUtils.getPassword(8);
         user.setPassword(passwordEncoder.encode(password));
+        user.setRole("user");
         user.setActive(true);
 
         user=userRepository.save(user);
@@ -65,8 +69,8 @@ public class AuthService {
         emailService.sendNewPassword(user.getFirstName(), password, user.getEmail());
     }
 
-    public void changeUserInfo(RequestUserDto userInfo) throws Exception {
-        UserEntity user = userRepository.findByEmail(SecurityUtils.getAuthInfo().getUsername()).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
+    public void changeUserInfo(RequestUserDto userInfo, Language language) throws Exception {
+        UserEntity user = userRepository.findByEmail(SecurityUtils.getAuthInfo().getUsername()).orElseThrow(() -> authExceptions.authExceptions(language));
 
         user.setFirstName(userInfo.getFirstName());
         user.setLastName(userInfo.getLastName());
@@ -75,8 +79,8 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public void forgotPassword(String detail) throws AuthException {
-        UserEntity user = userRepository.findByEmailOrPhoneNumber(detail).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
+    public void forgotPassword(String detail, Language language) throws AuthException {
+        UserEntity user = userRepository.findByEmailOrPhoneNumber(detail).orElseThrow(() -> authExceptions.authExceptions(language));
 
         String password = PasswordUtils.getPassword(8);
         user.setPassword(passwordEncoder.encode(password));
@@ -86,16 +90,16 @@ public class AuthService {
         emailService.sendNewPassword(user.getFirstName(), password, user.getEmail());
     }
 
-    public void changePassword(String password) throws AuthException {
-        UserEntity user = userRepository.findByEmail(SecurityUtils.getAuthInfo().getUsername()).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
+    public void changePassword(String password, Language language) throws AuthException {
+        UserEntity user = userRepository.findByEmail(SecurityUtils.getAuthInfo().getUsername()).orElseThrow(() -> authExceptions.authExceptions(language));
 
         user.setPassword(passwordEncoder.encode(password));
 
         userRepository.save(user);
     }
 
-    public void blackList(String detail) throws AuthException {
-        UserEntity user = userRepository.findByEmailOrPhoneNumber(detail).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
+    public void blackList(String detail, Language language) throws AuthException {
+        UserEntity user = userRepository.findByEmailOrPhoneNumber(detail).orElseThrow(() -> authExceptions.authExceptions(language));
 
         user.setActive(false);
 
@@ -110,7 +114,7 @@ public class AuthService {
         }
         final Claims claims = jwtProvider.getRefreshClaims(refreshToken);
         final String login = claims.getSubject();
-        final UserEntity user = userRepository.findByEmail(login).orElseThrow(() -> new AuthException("Данный пользователь не зарегистрирован в системе"));
+        final UserEntity user = userRepository.findByEmail(login).orElseThrow(() -> authExceptions.authExceptions(Language.EN));
 
         final String saveRefreshToken = refreshStorage.get(user.getId().toString());
         if (saveRefreshToken == null || !saveRefreshToken.equals(refreshToken)) {
