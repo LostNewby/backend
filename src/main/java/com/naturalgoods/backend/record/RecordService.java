@@ -27,7 +27,7 @@ public class RecordService {
     //TODO p->pt
     public Page<ProductCardsDto> filter(FilterDto filter, Integer page, Integer pageSize) {
         StringBuilder builder = new StringBuilder();
-        builder.append("select r.id, pt.name_ru, r.description, r.rating, r.price from records r left join product_type pt on pt.id = r.product_type_id left join product p on p.id = pt.product_id left join category c on c.id = p.category_id where r.region = :region and r.price >= :minPrice  ");
+        builder.append("select r.id, pt.name_ru, r.description, r.rating, r.price from records r left join product_type pt on pt.id = r.product_type_id left join product p on p.id = pt.product_id left join category c on c.id = p.category_id where lower(r.region) = lower(:region) and r.price >= :minPrice  ");
         if (!CollectionUtils.isEmpty(filter.getCategoryId())) {
             builder.append("and c.id in :category ");
         }
@@ -43,8 +43,10 @@ public class RecordService {
         if (Objects.nonNull(filter.getName()) && !filter.getName().equals("")) {
             builder.append("and lower(pt.name_kz) like lower(:name) or lower(pt.name_ru) like lower(:name) or lower(pt.name_en) like lower(:name) ");
         }
-        if (filter.getSortingType().equals(SortingType.PRICE)) {
-            builder.append("order by r.price");
+        if (filter.getSortingType().equals(SortingType.HIGH_PRICE)) {
+            builder.append("order by r.price DESC");
+        } else if (filter.getSortingType().equals(SortingType.LOW_PRICE)) {
+            builder.append("order by r.price ASC");
         } else if (filter.getSortingType().equals(SortingType.RATING)) {
             builder.append("order by r.rating");
         }
