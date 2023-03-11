@@ -1,14 +1,20 @@
 package com.naturalgoods.backend.record;
 
+import com.naturalgoods.backend.dto.FilterDto;
 import com.naturalgoods.backend.dto.ProductCardsDto;
 import com.naturalgoods.backend.record.enums.SortingType;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -17,51 +23,52 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RecordService {
     private final EntityManager entityManager;
+
     //TODO p->pt
-    public List<ProductCardsDto> filter(String name, List<Long> categoryId, List<Long> productId, List<Long> productTypeId, SortingType sortingType, Long minPrice, Long maxPrice, String region){
+    public Page<ProductCardsDto> filter(FilterDto filter, Integer page, Integer pageSize) {
         StringBuilder builder = new StringBuilder();
         builder.append("select r.id, pt.name_ru, r.description, r.rating, r.price from records r left join product_type pt on pt.id = r.product_type_id left join product p on p.id = pt.product_id left join category c on c.id = p.category_id where r.region = :region and r.price >= :minPrice  ");
-        if(!CollectionUtils.isEmpty(categoryId)){
+        if (!CollectionUtils.isEmpty(filter.getCategoryId())) {
             builder.append("and c.id in :category ");
         }
-        if(!CollectionUtils.isEmpty(productId)){
+        if (!CollectionUtils.isEmpty(filter.getProductId())) {
             builder.append("and p.id in :product ");
         }
-        if(!CollectionUtils.isEmpty(productTypeId)){
+        if (!CollectionUtils.isEmpty(filter.getProductTypeId())) {
             builder.append("and pt.id in :productType ");
         }
-        if(Objects.nonNull(maxPrice)){
+        if (Objects.nonNull(filter.getMaxPrice())) {
             builder.append("and r.price <= :maxPrice ");
         }
-        if(Objects.nonNull(name) && !name.equals("")){
+        if (Objects.nonNull(filter.getName()) && !filter.getName().equals("")) {
             builder.append("and lower(pt.name_kz) like lower(:name) or lower(pt.name_ru) like lower(:name) or lower(pt.name_en) like lower(:name) ");
         }
-        if(sortingType.equals(SortingType.PRICE)){
+        if (filter.getSortingType().equals(SortingType.PRICE)) {
             builder.append("order by r.price");
-        } else if(sortingType.equals(SortingType.RATING)){
+        } else if (filter.getSortingType().equals(SortingType.RATING)) {
             builder.append("order by r.rating");
         }
         Query query = entityManager.createNativeQuery(builder.toString());
-        query.setParameter("region", region);
-        query.setParameter("minPrice", minPrice);
+        query.setParameter("region", filter.getRegion());
+        query.setParameter("minPrice", filter.getMinPrice());
 
-        if(!CollectionUtils.isEmpty(categoryId)){
-            query.setParameter("category", categoryId);
+        if (!CollectionUtils.isEmpty(filter.getCategoryId())) {
+            query.setParameter("category", filter.getCategoryId());
         }
-        if(!CollectionUtils.isEmpty(productId)){
-            query.setParameter("product", productId);
+        if (!CollectionUtils.isEmpty(filter.getProductId())) {
+            query.setParameter("product", filter.getProductId());
         }
-        if(!CollectionUtils.isEmpty(productTypeId)){
-            query.setParameter("productType", productTypeId);
+        if (!CollectionUtils.isEmpty(filter.getProductTypeId())) {
+            query.setParameter("productType", filter.getProductTypeId());
         }
-        if(Objects.nonNull(maxPrice)){
-            query.setParameter("maxPrice", maxPrice);
+        if (Objects.nonNull(filter.getMaxPrice())) {
+            query.setParameter("maxPrice", filter.getMaxPrice());
         }
-        if(Objects.nonNull(name) && !name.equals("")){
-            query.setParameter("name", "%"+name+"%");
+        if (Objects.nonNull(filter.getName()) && !filter.getName().equals("")) {
+            query.setParameter("name", "%" + filter.getName() + "%");
         }
 
-        List<ProductCardsDto> result = (List<ProductCardsDto>) query.getResultList().stream().map(o->{
+        List<ProductCardsDto> result = (List<ProductCardsDto>) query.getResultList().stream().map(o -> {
             Object[] obj = (Object[]) o;
             ProductCardsDto productCardsDto = new ProductCardsDto();
             productCardsDto.setId(Long.valueOf(String.valueOf(obj[0])));
@@ -72,6 +79,15 @@ public class RecordService {
             return productCardsDto;
         }).collect(Collectors.toList());
 
-        return result;
+        Page<ProductCardsDto> finalResult = convertToPage(result, PageRequest.of(page, pageSize));
+
+        return finalResult;
+    }
+
+    public static <T> Page<T> convertToPage(List<T> objectList, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), objectList.size());
+        List<T> subList = start >= end ? new ArrayList<>() : objectList.subList(start, end);
+        return new PageImpl<>(subList, pageable, objectList.size());
     }
 }
