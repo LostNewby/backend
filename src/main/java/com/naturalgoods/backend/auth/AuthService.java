@@ -66,7 +66,7 @@ public class AuthService {
 
         user=userRepository.save(user);
 
-        emailService.sendNewPassword(user.getFirstName(), password, user.getEmail());
+        emailService.sendNewPassword(user.getFirstName(), password, user.getEmail(), language);
     }
 
     public void changeUserInfo(RequestUserDto userInfo, Language language) throws Exception {
@@ -87,7 +87,7 @@ public class AuthService {
 
         user=userRepository.save(user);
 
-        emailService.sendNewPassword(user.getFirstName(), password, user.getEmail());
+        emailService.sendNewPassword(user.getFirstName(), password, user.getEmail(), language);
     }
 
     public void changePassword(String password, Language language) throws AuthException {
