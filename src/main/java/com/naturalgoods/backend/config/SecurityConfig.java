@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorizedUrl -> authorizedUrl
                                 .antMatchers(
-                                        "/api/auth/**").permitAll()
+                                        "/**").permitAll()
                                 .anyRequest().authenticated()
                                 .and()
                                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
