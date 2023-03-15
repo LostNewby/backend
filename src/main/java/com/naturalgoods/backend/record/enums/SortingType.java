@@ -1,7 +1,8 @@
 package com.naturalgoods.backend.record.enums;
 
 public enum SortingType {
-    PRICE,
+    RATING,
     NAME,
-    RATING
+    HIGH_PRICE,
+    LOW_PRICE
 }
