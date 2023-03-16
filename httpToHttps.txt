@@ -1,0 +1,47 @@
+https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/configuring-https.html
+
+  If you've purchased and configured a custom domain name for your Elastic Beanstalk
+  environment, you can use HTTPS to allow users to connect to your web site securely.
+  If you don't own a domain name, you can still use HTTPS with a self-signed
+  certificate for development and testing purposes.
+
+Set up custom domain name
+
+Without subdomain:
+
+  Enable SSL
+
+  I use subdomain of elasticbeanstalk.com.
+
+  https://www.reddit.com/r/aws/comments/hdfgk4/enabling_https_for_elastic_beanstalk_without_a/
+  
+    Cloudfront distribution with ‘redirect to https’ setting.
+
+    ALB
+
+    TLS termination
+
+    create a self-signed certificate
+      https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/https-singleinstance.html
+      https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/https-singleinstance-java.html
+      open up port 443
+      try to telnet
+
+  https://stackoverflow.com/questions/18283507/elasticbeanstalk-ssl-without-custom-domain
+
+    Getting an official certificate from a CA then uploading it to AWS (using ACM or directly the CLI)
+    A self signed certificate doesn't work if you still need an https access through browser
+
+    https://stackoverflow.com/a/21204825/13673510
+      Using a load-balancer
+        https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/configuring-https.html
+        use openssl to create your own cert
+
+  https://stackoverflow.com/a/51745893/13673510
+
+  Amazon CloudFront distributions
+
+  https://www.techrepublic.com/article/how-to-enable-ssl-on-nginx/
+
+
+
