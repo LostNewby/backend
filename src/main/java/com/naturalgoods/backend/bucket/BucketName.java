@@ -1,7 +1,7 @@
 package com.naturalgoods.backend.bucket;
 
 public enum BucketName {
-    POSTPICTURE("aulfood-post-pictures");
+    POSTPICTURE("aulfood-image");
 
     private final String bucketName;
 
