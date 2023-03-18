@@ -17,14 +17,14 @@ public class ProductEntity {
     private Long id;
 
     @Column(name = "name_kz")
-    String nameKz;
+    private String nameKz;
 
     @Column(name = "name_ru")
-    String nameRu;
+    private String nameRu;
 
     @Column(name = "name_en")
-    String nameEn;
+    private String nameEn;
 
     @Column
-    Long categoryId;
+    private Long categoryId;
 }
