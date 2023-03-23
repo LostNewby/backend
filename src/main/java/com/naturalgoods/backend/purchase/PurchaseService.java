@@ -26,8 +26,7 @@ public class PurchaseService {
     public void purchaseRequest(List<PurchaseRequestDto> requestDtoList) {
         for (PurchaseRequestDto requestDto : requestDtoList) {
             PurchaseEntity purchase = new PurchaseEntity();
-            purchase.setCostumerId(1L);
-//            purchase.setCostumerId(SecurityUtils.getCurrentId());
+            purchase.setCostumerId(SecurityUtils.getCurrentId());
             purchase.setQuantity(requestDto.getQuantity());
             purchase.setPurchaseStatus(PurchaseStatus.Processing);
             purchase.setCostumerPhone(requestDto.getPhoneNumber());
@@ -41,8 +40,7 @@ public class PurchaseService {
 
     public Map<String,List<CostumerListResponse>> getCostumerList() {
         Map<String,List<CostumerListResponse>> result;
-        result = purchaseRepository.findBySellerId(1L).stream().map(o->{
-//        result = purchaseRepository.findBySellerId(SecurityUtils.getCurrentId()).stream().map(o->{
+        result = purchaseRepository.findBySellerId(SecurityUtils.getCurrentId()).stream().map(o->{
             CostumerListResponse costumerListResponse=new CostumerListResponse();
             costumerListResponse.setCostumer(userRepository.findById(Long.valueOf(o[0].toString())).isEmpty()?"":userRepository.findById(Long.valueOf(o[0].toString())).get().getEmail());
             costumerListResponse.setPurchaseNameKz(o[1]==null? "":o[1].toString());
