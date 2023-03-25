@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RecordService {
     private final EntityManager entityManager;
+    private final RecordRepository repository;
 
     //TODO p->pt
     public Page<ProductCardsDto> filter(FilterDto filter, Integer page, Integer pageSize) {
@@ -91,5 +92,9 @@ public class RecordService {
         int end = Math.min(start + pageable.getPageSize(), objectList.size());
         List<T> subList = start >= end ? new ArrayList<>() : objectList.subList(start, end);
         return new PageImpl<>(subList, pageable, objectList.size());
+    }
+
+    public boolean existsById(Long id) {
+        return repository.existsById(id);
     }
 }
