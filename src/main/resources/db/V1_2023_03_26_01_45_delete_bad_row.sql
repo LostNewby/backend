@@ -1,0 +1,1 @@
+DELETE FROM records WHERE id = 114;
