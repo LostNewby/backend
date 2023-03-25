@@ -2,7 +2,9 @@ package com.naturalgoods.backend.filestore;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +34,9 @@ public class FileStore {
             }
         });
         try {
-            s3.putObject(path, fileName, inputStream, objectMetadata);
+            PutObjectRequest request = new PutObjectRequest(path, fileName, inputStream, objectMetadata);
+            request.setCannedAcl(CannedAccessControlList.PublicRead);
+            s3.putObject(request);
 
         } catch (AmazonServiceException e) {
             throw new IllegalStateException("Failed to store file to s3", e);

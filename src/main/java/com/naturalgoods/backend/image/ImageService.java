@@ -43,8 +43,13 @@ public class ImageService {
         metadata.put("Content-Length", String.valueOf(file.getSize()));
         String path = String.format("%s/%s", BucketName.IMAGE_STORAGE.getBucketName(), recordId);
 
-        String noSpace = Objects.requireNonNull(file.getOriginalFilename()).replaceAll("\\s+", "");
-        String fileName = String.format("%s-%s", UUID.randomUUID(), noSpace);
+        System.out.println();
+
+        String contentType = file.getContentType();
+
+        String extension = contentType.substring(contentType.lastIndexOf("/") + 1);
+
+        String fileName = String.format("%s.%s", UUID.randomUUID(), extension);
 
         try {
             fileStore.save(path, fileName, Optional.of(metadata), file.getInputStream());
@@ -56,6 +61,7 @@ public class ImageService {
 
     public String getDownloadLink(Long recordId) {
         String relative = repository.findById(recordId).map(ImageEntity::getLink).orElseThrow();
-        return String.format("https://%s.s3.amazonaws.com/%s", BucketName.IMAGE_STORAGE.getBucketName(), relative);
+        return String.format("https://%s.s3.amazonaws.com/%s/%s",
+                BucketName.IMAGE_STORAGE.getBucketName(), recordId, relative);
     }
 }

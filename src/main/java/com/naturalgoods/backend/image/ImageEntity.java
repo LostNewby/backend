@@ -13,6 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class ImageEntity {
     @Id
+    @Column(name = "record_id")
     private Long recordId;
 
     @Column(name = "link")

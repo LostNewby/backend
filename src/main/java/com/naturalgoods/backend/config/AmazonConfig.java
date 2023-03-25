@@ -22,7 +22,7 @@ public class AmazonConfig {
         return AmazonS3ClientBuilder.standard()
                 // To avoid SDKClientException-Unable to find a region via the region provider chain
                 // https://stackoverflow.com/a/45081648/13673510
-                .withRegion(Regions.EU_CENTRAL_1)
+                .withRegion(Regions.US_EAST_1)
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                 .build();
     }
