@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.security.auth.message.AuthException;
 
 @RestController
-@RequestMapping(path = "api/auth")
+@RequestMapping(path = "api/auth/")
 @CrossOrigin("*")
 @AllArgsConstructor
 public class AuthController {
@@ -30,7 +30,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/registration")
+    @PostMapping("registration")
     public ResponseEntity<ApiResponse> registration(@RequestBody RequestUserDto request, @RequestParam(required = false, defaultValue = "RU") Language lang) {
         try {
             authService.registration(request, lang);
@@ -40,7 +40,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/changeUserInfo")
+    @PostMapping("changeUserInfo")
     public ResponseEntity<ApiResponse> changeUserInfo(@RequestBody RequestUserDto userInfo, @RequestParam(required = false, defaultValue = "RU") Language lang) {
         try {
             authService.changeUserInfo(userInfo, lang);
@@ -50,7 +50,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/forgotPassword")
+    @PostMapping("forgotPassword")
     public ResponseEntity<ApiResponse> forgotPassword(@RequestParam String mail, @RequestParam(required = false, defaultValue = "RU") Language lang) {
         try {
             authService.forgotPassword(mail, lang);
@@ -60,7 +60,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/changePassword")
+    @PostMapping("changePassword")
     public ResponseEntity<ApiResponse> changePassword(@RequestParam String password, @RequestParam(required = false, defaultValue = "RU") Language lang) {
         try {
             authService.changePassword(password, lang);
@@ -70,7 +70,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/blackListUser")
+    @PostMapping("blackListUser")
     public ResponseEntity<ApiResponse> banUser(@RequestParam String email, @RequestParam(required = false, defaultValue = "RU") Language lang) {
         try {
             authService.blackList(email, lang);

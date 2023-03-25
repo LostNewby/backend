@@ -8,24 +8,24 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Data
-@Table(name = "ratings")
 @Entity
-@NoArgsConstructor
+@Table(name = "ratings")
 @AllArgsConstructor
+@NoArgsConstructor
 public class RatingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "user_id")
-    Long userId;
+    private Long userId;
 
     @Column(name = "record_id")
-    Long recordId;
+    private Long recordId;
 
-    @Column(name = "ratings_stars")
-    BigDecimal ratingStars;
+    @Column(name = "rating_stars")
+    private Integer rating;
 
-    @Column
-    String description;
+    @Column(name = "description")
+    private String description;
 }
