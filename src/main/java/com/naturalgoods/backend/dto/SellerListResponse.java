@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class CostumerListResponse {
+public class SellerListResponse {
     private Long purchaseId;
     private String purchaseNameKz;
     private String purchaseNameRu;
@@ -14,6 +14,6 @@ public class CostumerListResponse {
     private Date purchaseDate;
     private Long price;
     private Integer quantity;
-    private String costumer;
+    private String seller;
     private String costumerPhone;
 }
