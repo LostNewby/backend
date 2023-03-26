@@ -3,6 +3,7 @@ package com.naturalgoods.backend.record;
 import com.naturalgoods.backend.api.ApiDataResponse;
 import com.naturalgoods.backend.dto.FilterDto;
 import com.naturalgoods.backend.dto.ProductCardsDto;
+import com.naturalgoods.backend.dto.RecordAddDto;
 import com.naturalgoods.backend.image.ImageService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,17 @@ public class RecordController {
                                                                          @RequestParam Integer pageSize) {
 
         return ResponseEntity.ok(new ApiDataResponse<>(recordService.filter(filter, page, pageSize)));
+    }
+
+    @PostMapping(
+            path = "add",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public void addRecord(@RequestBody RecordAddDto recordAddDto,
+                            @RequestParam MultipartFile file) {
+        recordAddDto.setPhoto(file);
+        recordService.recordAdd(recordAddDto);
     }
 
     @PostMapping(

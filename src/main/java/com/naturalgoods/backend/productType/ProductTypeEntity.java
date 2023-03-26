@@ -17,14 +17,18 @@ public class ProductTypeEntity {
     private Long id;
 
     @Column(name = "name_kz")
-    String nameKz;
+    private String nameKz;
 
     @Column(name = "name_ru")
-    String nameRu;
+    private String nameRu;
 
     @Column(name = "name_en")
-    String nameEn;
+    private String nameEn;
 
     @Column
-    Long productId;
+    private Long productId;
+
+    @Column(name = "unit")
+    @Enumerated(EnumType.STRING)
+    private Unit unit;
 }
