@@ -1,6 +1,6 @@
 package com.naturalgoods.backend.record;
 
-import com.naturalgoods.backend.record.enums.Unit;
+import com.naturalgoods.backend.productType.Unit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,30 +19,27 @@ public class RecordEntity {
     private Long id;
 
     @Column(name = "user_id")
-    Long userId;
+    private Long userId;
 
     @Column(name = "product_type_id")
-    Long productTypeId;
+    private Long productTypeId;
 
     @Column
-    BigDecimal rating;
+    private BigDecimal rating;
 
     @Column
-    Long price;
+    private Long price;
 
     @Column
-    Long quantity;
+    private Long quantity;
 
     @Column(name = "limit_to_buy")
-    Long limit;
+    private Long limit;
 
     @Column
-    String region;
+    private String region;
 
     @Column
-    String description;
+    private String description;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    Unit unit;
 }

@@ -1,7 +1,10 @@
 package com.naturalgoods.backend.purchase;
 
+import com.amazonaws.transform.MapEntry;
 import com.naturalgoods.backend.account.UserRepository;
+import com.naturalgoods.backend.auth.Language;
 import com.naturalgoods.backend.dto.CostumerListResponse;
+import com.naturalgoods.backend.dto.PurchaseListDto;
 import com.naturalgoods.backend.dto.PurchaseRequestDto;
 import com.naturalgoods.backend.dto.SellerListResponse;
 import com.naturalgoods.backend.record.RecordEntity;
@@ -11,9 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,8 +40,9 @@ public class PurchaseService {
         }
     }
 
-    public Map<String,List<CostumerListResponse>> getCostumerList(PurchaseStatus purchaseStatus) {
+    public List<PurchaseListDto> getCostumerList(PurchaseStatus purchaseStatus) {
         Map<String,List<CostumerListResponse>> result;
+        List<PurchaseListDto> purchaseListResult= new ArrayList<>();
         result = purchaseRepository.findBySellerId(SecurityUtils.getCurrentId(), purchaseStatus.toString()).stream().map(o->{
             CostumerListResponse costumerListResponse=new CostumerListResponse();
             costumerListResponse.setCostumer(userRepository.findById(Long.valueOf(o[0].toString())).isEmpty()?"":userRepository.findById(Long.valueOf(o[0].toString())).get().getEmail());
@@ -51,15 +53,34 @@ public class PurchaseService {
             costumerListResponse.setPrice(Long.valueOf(o[5].toString()));
             costumerListResponse.setCostumerPhone(o[6].toString());
             costumerListResponse.setPurchaseDate((Date) o[7]);
-            costumerListResponse.setUnit(o[8].toString());
+            costumerListResponse.setUnit(o[8]==null? "":o[3].toString());
             costumerListResponse.setPurchaseId(Long.valueOf(o[9].toString()));
             return costumerListResponse;
         }).collect(Collectors.groupingBy(CostumerListResponse::getCostumer));
-        return result;
+
+        for(Map.Entry<String, List<CostumerListResponse>> items: result.entrySet()){
+            PurchaseListDto purchaseListDto=new PurchaseListDto();
+            purchaseListDto.setEmail(items.getKey());
+            Long price = 0L;
+            Map<Language, String> names = new HashMap<>();
+            for(CostumerListResponse listItem: items.getValue()){
+                names.put(Language.EN, listItem.getQuantity() + listItem.getUnit() + listItem.getPurchaseNameEn());
+                names.put(Language.RU, listItem.getQuantity() + listItem.getUnit() + listItem.getPurchaseNameRu());
+                names.put(Language.KK, listItem.getQuantity() + listItem.getUnit() + listItem.getPurchaseNameKz());
+                price+=listItem.getPrice();
+                purchaseListDto.setCostumerPhone(listItem.getCostumerPhone());
+                purchaseListDto.setPurchaseDate(listItem.getPurchaseDate());
+            }
+            purchaseListDto.setPrice(price);
+            purchaseListDto.setPurchaseName(names);
+            purchaseListResult.add(purchaseListDto);
+        }
+        return purchaseListResult;
     }
 
-    public Map<String,List<SellerListResponse>> getPurchaseList(PurchaseStatus purchaseStatus) {
+    public List<PurchaseListDto> getPurchaseList(PurchaseStatus purchaseStatus) {
         Map<String,List<SellerListResponse>> result;
+        List<PurchaseListDto> purchaseListResult= new ArrayList<>();
         result = purchaseRepository.findByCustomerId(SecurityUtils.getCurrentId(), purchaseStatus.toString()).stream().map(o->{
             SellerListResponse sellerListResponse=new SellerListResponse();
             sellerListResponse.setSeller(userRepository.findById(Long.valueOf(o[0].toString())).isEmpty()?"":userRepository.findById(Long.valueOf(o[0].toString())).get().getEmail());
@@ -70,11 +91,29 @@ public class PurchaseService {
             sellerListResponse.setPrice(Long.valueOf(o[5].toString()));
             sellerListResponse.setCostumerPhone(o[6].toString());
             sellerListResponse.setPurchaseDate((Date) o[7]);
-            sellerListResponse.setUnit(o[8].toString());
+            sellerListResponse.setUnit(o[8]==null? "":o[3].toString());
             sellerListResponse.setPurchaseId(Long.valueOf(o[9].toString()));
             return sellerListResponse;
         }).collect(Collectors.groupingBy(SellerListResponse::getSeller));
-        return result;
+
+        for(Map.Entry<String, List<SellerListResponse>> items: result.entrySet()){
+            PurchaseListDto purchaseListDto=new PurchaseListDto();
+            purchaseListDto.setEmail(items.getKey());
+            Long price = 0L;
+            Map<Language, String> names = new HashMap<>();
+            for(SellerListResponse listItem: items.getValue()){
+                names.put(Language.EN, listItem.getQuantity() + listItem.getUnit() + listItem.getPurchaseNameEn());
+                names.put(Language.RU, listItem.getQuantity() + listItem.getUnit() + listItem.getPurchaseNameRu());
+                names.put(Language.KK, listItem.getQuantity() + listItem.getUnit() + listItem.getPurchaseNameKz());
+                price+=listItem.getPrice();
+                purchaseListDto.setCostumerPhone(listItem.getCostumerPhone());
+                purchaseListDto.setPurchaseDate(listItem.getPurchaseDate());
+            }
+            purchaseListDto.setPrice(price);
+            purchaseListDto.setPurchaseName(names);
+            purchaseListResult.add(purchaseListDto);
+        }
+        return purchaseListResult;
     }
 
     public void changePurchaseStatus(Long purchaseId, PurchaseStatus purchaseStatus) throws Exception {

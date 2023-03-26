@@ -2,7 +2,10 @@ package com.naturalgoods.backend.record;
 
 import com.naturalgoods.backend.dto.FilterDto;
 import com.naturalgoods.backend.dto.ProductCardsDto;
+import com.naturalgoods.backend.dto.RecordAddDto;
+import com.naturalgoods.backend.image.ImageService;
 import com.naturalgoods.backend.record.enums.SortingType;
+import com.naturalgoods.backend.util.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,7 +26,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RecordService {
     private final EntityManager entityManager;
-    private final RecordRepository repository;
+    private final RecordRepository recordRepository;
+    private final ImageService imageService;
 
     //TODO p->pt
     public Page<ProductCardsDto> filter(FilterDto filter, Integer page, Integer pageSize) {
@@ -79,12 +83,28 @@ public class RecordService {
             productCardsDto.setDescription(String.valueOf(obj[2]));
             productCardsDto.setRating(BigDecimal.valueOf(Double.valueOf(String.valueOf(obj[3]))));
             productCardsDto.setPrice(Long.valueOf(String.valueOf(obj[4])));
+            productCardsDto.setPhoto(imageService.getDownloadLink(Long.valueOf(String.valueOf(obj[0]))));
             return productCardsDto;
         }).collect(Collectors.toList());
 
         Page<ProductCardsDto> finalResult = convertToPage(result, PageRequest.of(page, pageSize));
 
         return finalResult;
+    }
+
+    public void recordAdd(RecordAddDto productAddDto) {
+        RecordEntity record = new RecordEntity();
+        record.setProductTypeId(productAddDto.getProductTypeId());
+        record.setUserId(SecurityUtils.getCurrentId());
+        record.setQuantity(productAddDto.getQuantity());
+        record.setDescription(productAddDto.getDescription());
+        record.setPrice(productAddDto.getPrice());
+        record.setLimit(productAddDto.getLimit());
+        record.setRegion(productAddDto.getRegion());
+
+        record = recordRepository.save(record);
+
+        imageService.upload(record.getId(), productAddDto.getPhoto());
     }
 
     public static <T> Page<T> convertToPage(List<T> objectList, Pageable pageable) {
@@ -94,7 +114,4 @@ public class RecordService {
         return new PageImpl<>(subList, pageable, objectList.size());
     }
 
-    public boolean existsById(Long id) {
-        return repository.existsById(id);
-    }
 }

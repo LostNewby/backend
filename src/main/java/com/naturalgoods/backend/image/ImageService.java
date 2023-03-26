@@ -1,8 +1,8 @@
 package com.naturalgoods.backend.image;
 
-import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.naturalgoods.backend.bucket.BucketName;
 import com.naturalgoods.backend.filestore.FileStore;
+import com.naturalgoods.backend.record.RecordRepository;
 import com.naturalgoods.backend.record.RecordService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,7 @@ import static org.apache.http.entity.ContentType.*;
 public class ImageService {
     private final ImageRepository repository;
     private final FileStore fileStore;
-
-    private final RecordService recordService;
+    private final RecordRepository recordRepository;
 
     public void upload(Long recordId, MultipartFile file) {
         if (file.isEmpty()) {
@@ -34,7 +33,7 @@ public class ImageService {
             throw new IllegalStateException("File must be an image [ " + file.getContentType() + " ]");
         }
 
-        if (!recordService.existsById(recordId)) {
+        if (!recordRepository.existsById(recordId)) {
             throw new IllegalStateException(String.format("Record with id %s not found", recordId));
         }
 

@@ -1,18 +1,16 @@
 package com.naturalgoods.backend.purchase;
 
-import com.naturalgoods.backend.api.ApiDataResponse;
 import com.naturalgoods.backend.api.ApiEmptyResponse;
 import com.naturalgoods.backend.api.ApiErrorResponse;
+import com.naturalgoods.backend.api.ApiListResponse;
 import com.naturalgoods.backend.api.ApiResponse;
-import com.naturalgoods.backend.dto.CostumerListResponse;
+import com.naturalgoods.backend.dto.PurchaseListDto;
 import com.naturalgoods.backend.dto.PurchaseRequestDto;
-import com.naturalgoods.backend.dto.SellerListResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(path = "api/purchase")
@@ -31,18 +29,18 @@ public class PurchaseController {
     }
 
     @GetMapping("/customerList")
-    public ResponseEntity<ApiDataResponse<Map<String, List<CostumerListResponse>>>> getCostumerList(@RequestParam PurchaseStatus status) {
-        return ResponseEntity.ok(new ApiDataResponse<>(purchaseService.getCostumerList(status)));
+    public ResponseEntity<ApiListResponse<PurchaseListDto>> getCostumerList(@RequestParam PurchaseStatus status) {
+        return ResponseEntity.ok(new ApiListResponse<>(purchaseService.getCostumerList(status)));
     }
 
     @GetMapping("/purchaseList")
-    public ResponseEntity<ApiDataResponse<Map<String, List<SellerListResponse>>>> getPurchaseList(@RequestParam PurchaseStatus status) {
-        return ResponseEntity.ok(new ApiDataResponse<>(purchaseService.getPurchaseList(status)));
+    public ResponseEntity<ApiListResponse<PurchaseListDto>> getPurchaseList(@RequestParam PurchaseStatus status) {
+        return ResponseEntity.ok(new ApiListResponse<>(purchaseService.getPurchaseList(status)));
     }
 
     @PostMapping("/changeStatus")
     public ResponseEntity<ApiResponse> changeStatus(@RequestParam Long purchaseId,
-            @RequestParam PurchaseStatus purchaseStatus) {
+                                                    @RequestParam PurchaseStatus purchaseStatus) {
         try {
             purchaseService.changePurchaseStatus(purchaseId, purchaseStatus);
             return ResponseEntity.ok(ApiEmptyResponse.create());
