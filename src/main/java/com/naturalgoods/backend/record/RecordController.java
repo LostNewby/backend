@@ -34,8 +34,8 @@ public class RecordController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public void addRecord(@RequestBody RecordAddDto recordAddDto,
-                            @RequestParam MultipartFile file) {
+    public void addRecord(@RequestPart RecordAddDto recordAddDto,
+                            @RequestPart MultipartFile file) {
         recordAddDto.setPhoto(file);
         recordService.recordAdd(recordAddDto);
     }
