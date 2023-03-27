@@ -26,12 +26,12 @@ public class ImageService {
                     "name: " + file.getName());
         }
 
-//        if (!Arrays.asList(
-//                IMAGE_JPEG.getMimeType(),
-//                IMAGE_PNG.getMimeType(),
-//                IMAGE_GIF.getMimeType()).contains(file.getContentType())) {
-//            throw new IllegalStateException("File must be an image [ " + file.getContentType() + " ]");
-//        }
+        if (!Arrays.asList(
+                IMAGE_JPEG.getMimeType(),
+                IMAGE_PNG.getMimeType(),
+                IMAGE_GIF.getMimeType()).contains(file.getContentType())) {
+            throw new IllegalStateException("File must be an image [ " + file.getContentType() + " ]");
+        }
 
         if (!recordRepository.existsById(recordId)) {
             throw new IllegalStateException(String.format("Record with id %s not found", recordId));
