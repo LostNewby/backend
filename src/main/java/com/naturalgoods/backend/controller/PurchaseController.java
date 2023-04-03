@@ -1,4 +1,4 @@
-package com.naturalgoods.backend.purchase;
+package com.naturalgoods.backend.controller;
 
 import com.naturalgoods.backend.api.ApiEmptyResponse;
 import com.naturalgoods.backend.api.ApiErrorResponse;
@@ -6,6 +6,8 @@ import com.naturalgoods.backend.api.ApiListResponse;
 import com.naturalgoods.backend.api.ApiResponse;
 import com.naturalgoods.backend.dto.PurchaseListDto;
 import com.naturalgoods.backend.dto.PurchaseRequestDto;
+import com.naturalgoods.backend.purchase.PurchaseService;
+import com.naturalgoods.backend.purchase.PurchaseStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

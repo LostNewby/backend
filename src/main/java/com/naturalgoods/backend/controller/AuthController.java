@@ -1,8 +1,10 @@
-package com.naturalgoods.backend.auth;
+package com.naturalgoods.backend.controller;
 
 import com.naturalgoods.backend.api.ApiEmptyResponse;
 import com.naturalgoods.backend.api.ApiErrorResponse;
 import com.naturalgoods.backend.api.ApiResponse;
+import com.naturalgoods.backend.auth.AuthService;
+import com.naturalgoods.backend.auth.Language;
 import com.naturalgoods.backend.dto.RequestUserDto;
 import com.naturalgoods.backend.util.JwtRequest;
 import com.naturalgoods.backend.util.JwtResponse;

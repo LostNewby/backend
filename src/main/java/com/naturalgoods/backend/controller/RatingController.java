@@ -1,10 +1,11 @@
-package com.naturalgoods.backend.rating;
+package com.naturalgoods.backend.controller;
 
 import com.naturalgoods.backend.api.ApiEmptyResponse;
 import com.naturalgoods.backend.api.ApiErrorResponse;
 import com.naturalgoods.backend.api.ApiListResponse;
 import com.naturalgoods.backend.api.ApiResponse;
 import com.naturalgoods.backend.dto.RatingRequestDto;
+import com.naturalgoods.backend.rating.RatingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

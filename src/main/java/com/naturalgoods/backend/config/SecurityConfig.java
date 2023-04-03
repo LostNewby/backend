@@ -37,7 +37,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorizedUrl -> authorizedUrl
                                 .antMatchers(
-                                        "/**").permitAll()
+                                        "/**",
+                                        "/swagger-ui/**",
+                                        "/configuration/**",
+                                        "/swagger-resources/**",
+                                        "/v2/api-docs",
+                                        "/webjars/**").permitAll()
                                 .anyRequest().authenticated()
                                 .and()
                                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)

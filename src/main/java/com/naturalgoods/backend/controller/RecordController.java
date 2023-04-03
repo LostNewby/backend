@@ -1,10 +1,11 @@
-package com.naturalgoods.backend.record;
+package com.naturalgoods.backend.controller;
 
 import com.naturalgoods.backend.api.ApiDataResponse;
 import com.naturalgoods.backend.dto.FilterDto;
 import com.naturalgoods.backend.dto.ProductCardsDto;
 import com.naturalgoods.backend.dto.RecordAddDto;
 import com.naturalgoods.backend.image.ImageService;
+import com.naturalgoods.backend.record.RecordService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
