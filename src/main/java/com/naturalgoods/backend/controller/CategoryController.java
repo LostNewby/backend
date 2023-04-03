@@ -1,7 +1,8 @@
-package com.naturalgoods.backend.product;
+package com.naturalgoods.backend.controller;
 
 import com.naturalgoods.backend.api.ApiListResponse;
 import com.naturalgoods.backend.auth.Language;
+import com.naturalgoods.backend.category.CategoryService;
 import com.naturalgoods.backend.dto.DropDownDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "api/product")
+@RequestMapping(path = "api/category")
 @AllArgsConstructor
-public class ProductController {
-    private final ProductService productService;
+public class CategoryController {
+    private final CategoryService categoryService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiListResponse<DropDownDto>> filter(@RequestParam Long categoryId,
-                                                               @RequestParam Language lang) {
-        return ResponseEntity.ok(new ApiListResponse<>(productService.productList(categoryId, lang)));
+    public ResponseEntity<ApiListResponse<DropDownDto>> filter(@RequestParam Language lang) {
+        return ResponseEntity.ok(new ApiListResponse<>(categoryService.categoryList(lang)));
     }
 }
