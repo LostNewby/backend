@@ -23,7 +23,7 @@ public class RecordController {
     private final RecordService recordService;
     private final ImageService imageService;
 
-    @GetMapping("/filter")
+    @PostMapping("/filter")
     public ResponseEntity<ApiDataResponse<Page<ProductCardsDto>>> filter(@RequestBody FilterDto filter,
                                                                          @RequestParam Integer page,
                                                                          @RequestParam Integer pageSize,
