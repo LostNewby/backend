@@ -1,5 +1,6 @@
 package com.naturalgoods.backend.record;
 
+import com.naturalgoods.backend.auth.Language;
 import com.naturalgoods.backend.dto.FilterDto;
 import com.naturalgoods.backend.dto.ProductCardsDto;
 import com.naturalgoods.backend.dto.RecordAddDto;
@@ -30,16 +31,26 @@ public class RecordService {
     private final ImageService imageService;
 
     //TODO p->pt
-    public Page<ProductCardsDto> filter(FilterDto filter, Integer page, Integer pageSize) {
+    public Page<ProductCardsDto> filter(FilterDto filter, Integer page, Integer pageSize, Language lang) {
+        page--;
         StringBuilder builder = new StringBuilder();
-        builder.append("select r.id, pt.name_ru, r.description, r.rating, r.price from records r left join product_type pt on pt.id = r.product_type_id left join product p on p.id = pt.product_id left join category c on c.id = p.category_id where lower(r.region) = lower(:region) and r.price >= :minPrice  ");
-        if (!CollectionUtils.isEmpty(filter.getCategoryId())) {
+        builder.append("select r.id,");
+        if(lang.equals(Language.RU)){
+            builder.append(" pt.name_ru,");
+        } else if(lang.equals(Language.KK)){
+            builder.append(" pt.name_kz,");
+        }  else if(lang.equals(Language.EN)){
+            builder.append(" pt.name_en,");
+        }
+
+        builder.append(" r.description, r.rating, r.price from records r left join product_type pt on pt.id = r.product_type_id left join product p on p.id = pt.product_id left join category c on c.id = p.category_id where lower(r.region) = lower(:region) and r.price >= :minPrice  ");
+        if (!CollectionUtils.isEmpty(filter.getCategoryId()) && filter.getCategoryId().get(0)!=0L) {
             builder.append("and c.id in :category ");
         }
-        if (!CollectionUtils.isEmpty(filter.getProductId())) {
+        if (!CollectionUtils.isEmpty(filter.getProductId())  && filter.getProductId().get(0)!=0L) {
             builder.append("and p.id in :product ");
         }
-        if (!CollectionUtils.isEmpty(filter.getProductTypeId())) {
+        if (!CollectionUtils.isEmpty(filter.getProductTypeId())  && filter.getProductTypeId().get(0)!=0L) {
             builder.append("and pt.id in :productType ");
         }
         if (Objects.nonNull(filter.getMaxPrice())) {

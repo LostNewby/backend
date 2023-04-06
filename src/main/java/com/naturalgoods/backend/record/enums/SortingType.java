@@ -4,5 +4,6 @@ public enum SortingType {
     RATING,
     NAME,
     HIGH_PRICE,
-    LOW_PRICE
+    LOW_PRICE,
+    DEFAULT
 }
