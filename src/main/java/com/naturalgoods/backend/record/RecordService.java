@@ -70,13 +70,13 @@ public class RecordService {
         query.setParameter("region", filter.getRegion());
         query.setParameter("minPrice", filter.getMinPrice());
 
-        if (!CollectionUtils.isEmpty(filter.getCategoryId())) {
+        if (!CollectionUtils.isEmpty(filter.getCategoryId()) && filter.getCategoryId().get(0)!=0L) {
             query.setParameter("category", filter.getCategoryId());
         }
-        if (!CollectionUtils.isEmpty(filter.getProductId())) {
+        if (!CollectionUtils.isEmpty(filter.getProductId()) && filter.getProductId().get(0)!=0L) {
             query.setParameter("product", filter.getProductId());
         }
-        if (!CollectionUtils.isEmpty(filter.getProductTypeId())) {
+        if (!CollectionUtils.isEmpty(filter.getProductTypeId()) && filter.getProductTypeId().get(0)!=0L) {
             query.setParameter("productType", filter.getProductTypeId());
         }
         if (Objects.nonNull(filter.getMaxPrice())) {
