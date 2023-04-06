@@ -1,6 +1,7 @@
 package com.naturalgoods.backend.controller;
 
 import com.naturalgoods.backend.api.ApiDataResponse;
+import com.naturalgoods.backend.auth.Language;
 import com.naturalgoods.backend.dto.FilterDto;
 import com.naturalgoods.backend.dto.ProductCardsDto;
 import com.naturalgoods.backend.dto.RecordAddDto;
@@ -25,9 +26,10 @@ public class RecordController {
     @GetMapping("/filter")
     public ResponseEntity<ApiDataResponse<Page<ProductCardsDto>>> filter(@RequestBody FilterDto filter,
                                                                          @RequestParam Integer page,
-                                                                         @RequestParam Integer pageSize) {
+                                                                         @RequestParam Integer pageSize,
+                                                                         @RequestParam Language lang) {
 
-        return ResponseEntity.ok(new ApiDataResponse<>(recordService.filter(filter, page, pageSize)));
+        return ResponseEntity.ok(new ApiDataResponse<>(recordService.filter(filter, page, pageSize, lang)));
     }
 
     @PostMapping(
