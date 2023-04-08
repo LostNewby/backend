@@ -2,11 +2,13 @@ package com.naturalgoods.backend.api;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@NoArgsConstructor
 public class ApiListResponse<T> extends ApiResponse {
     private List<T> list;
     private Long totalCount;

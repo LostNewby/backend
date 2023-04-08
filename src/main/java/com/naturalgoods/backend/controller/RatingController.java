@@ -5,6 +5,7 @@ import com.naturalgoods.backend.api.ApiErrorResponse;
 import com.naturalgoods.backend.api.ApiListResponse;
 import com.naturalgoods.backend.api.ApiResponse;
 import com.naturalgoods.backend.dto.RatingRequestDto;
+import com.naturalgoods.backend.dto.RatingResponseDto;
 import com.naturalgoods.backend.rating.RatingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +28,11 @@ public class RatingController {
     }
 
     @GetMapping("get")
-    public ResponseEntity<ApiResponse> ratingGet(@RequestParam Long recordId) {
+    public ResponseEntity<ApiListResponse<RatingResponseDto>> ratingGet(@RequestParam Long recordId) {
         try {
             return ResponseEntity.ok(new ApiListResponse<>(ratingService.getRating(recordId)));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ApiErrorResponse(e.getMessage()));
+            return ResponseEntity.badRequest().body(new ApiListResponse<>());
         }
     }
 }
