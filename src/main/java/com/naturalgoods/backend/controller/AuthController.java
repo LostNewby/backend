@@ -20,7 +20,6 @@ import javax.security.auth.message.AuthException;
 public class AuthController {
     private final AuthService authService;
 
-
     @PostMapping("login")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest authRequest, @RequestParam(required = false, defaultValue = "RU") Language lang) {
         try {
@@ -41,40 +40,10 @@ public class AuthController {
         }
     }
 
-    @PostMapping("changeUserInfo")
-    public ResponseEntity<ApiResponse> changeUserInfo(@RequestBody RequestUserDto userInfo, @RequestParam(required = false, defaultValue = "RU") Language lang) {
-        try {
-            authService.changeUserInfo(userInfo, lang);
-            return ResponseEntity.ok(ApiEmptyResponse.create());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ApiErrorResponse.create(e.getMessage()));
-        }
-    }
-
     @PostMapping("forgotPassword")
     public ResponseEntity<ApiResponse> forgotPassword(@RequestParam String mail, @RequestParam(required = false, defaultValue = "RU") Language lang) {
         try {
             authService.forgotPassword(mail, lang);
-            return ResponseEntity.ok(ApiEmptyResponse.create());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ApiErrorResponse.create(e.getMessage()));
-        }
-    }
-
-    @PostMapping("changePassword")
-    public ResponseEntity<ApiResponse> changePassword(@RequestParam String password, @RequestParam(required = false, defaultValue = "RU") Language lang) {
-        try {
-            authService.changePassword(password, lang);
-            return ResponseEntity.ok(ApiEmptyResponse.create());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ApiErrorResponse.create(e.getMessage()));
-        }
-    }
-
-    @PostMapping("blackListUser")
-    public ResponseEntity<ApiResponse> banUser(@RequestParam String email, @RequestParam(required = false, defaultValue = "RU") Language lang) {
-        try {
-            authService.blackList(email, lang);
             return ResponseEntity.ok(ApiEmptyResponse.create());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiErrorResponse.create(e.getMessage()));

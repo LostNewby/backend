@@ -4,6 +4,7 @@ import com.naturalgoods.backend.account.UserEntity;
 import com.naturalgoods.backend.account.UserRepository;
 import com.naturalgoods.backend.auth.email.EmailService;
 import com.naturalgoods.backend.dto.RequestUserDto;
+import com.naturalgoods.backend.dto.UserInfoDto;
 import com.naturalgoods.backend.mappers.RequestUserMapper;
 import com.naturalgoods.backend.util.*;
 import io.jsonwebtoken.Claims;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.security.auth.message.AuthException;
 import javax.validation.constraints.NotNull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -41,7 +43,7 @@ public class AuthService {
             userRepository.save(user);
 
             JwtResponse response = new JwtResponse(accessToken, refreshToken);
-            response.setRole(user.getRole());
+            response.setRole(user.getRole().toString());
             return response;
         } else {
             throw authExceptions.incorrectPassword(language);
@@ -61,7 +63,7 @@ public class AuthService {
 
         String password = PasswordUtils.getPassword(8);
         user.setPassword(passwordEncoder.encode(password));
-        user.setRole("user");
+        user.setRole(Role.USER);
         user.setActive(true);
 
         user=userRepository.save(user);
@@ -123,6 +125,15 @@ public class AuthService {
 
         final String accessToken = jwtProvider.generateAccessToken(user);
         return new JwtResponse(accessToken, refreshToken);
+    }
+
+    public List<UserInfoDto> userList(Role role){
+        return userRepository.findAllByRole(role).stream().map(e->{
+            UserInfoDto userInfoDto = new UserInfoDto();
+            userInfoDto.setEmail(e.getEmail());
+            userInfoDto.setPhone(e.getPhoneNumber());
+            return userInfoDto;
+        }).collect(Collectors.toList());
     }
 
 }
