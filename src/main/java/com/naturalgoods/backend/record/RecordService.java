@@ -53,7 +53,7 @@ public class RecordService {
         if (!CollectionUtils.isEmpty(filter.getProductTypeId())  && filter.getProductTypeId().get(0)!=0L) {
             builder.append("and pt.id in :productType ");
         }
-        if (Objects.nonNull(filter.getMaxPrice())) {
+        if (Objects.nonNull(filter.getMaxPrice())  && filter.getMaxPrice()!=0) {
             builder.append("and r.price <= :maxPrice ");
         }
         if (Objects.nonNull(filter.getName()) && !filter.getName().equals("")) {
@@ -85,7 +85,7 @@ public class RecordService {
         if (!CollectionUtils.isEmpty(filter.getProductTypeId()) && filter.getProductTypeId().get(0)!=0L) {
             query.setParameter("productType", filter.getProductTypeId());
         }
-        if (Objects.nonNull(filter.getMaxPrice())) {
+        if (Objects.nonNull(filter.getMaxPrice()) && filter.getMaxPrice()!=0) {
             query.setParameter("maxPrice", filter.getMaxPrice());
         }
         if (Objects.nonNull(filter.getName()) && !filter.getName().equals("")) {
