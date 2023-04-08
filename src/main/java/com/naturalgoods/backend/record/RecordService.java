@@ -57,14 +57,20 @@ public class RecordService {
             builder.append("and r.price <= :maxPrice ");
         }
         if (Objects.nonNull(filter.getName()) && !filter.getName().equals("")) {
-            builder.append("and lower(pt.name_kz) like lower(:name) or lower(pt.name_ru) like lower(:name) or lower(pt.name_en) like lower(:name) ");
+            if(lang.equals(Language.RU)){
+                builder.append("and lower(pt.name_ru) like lower(:name) ");
+            } else if(lang.equals(Language.KK)){
+                builder.append("and lower(pt.name_kz) like lower(:name) ");
+            }  else if(lang.equals(Language.EN)){
+                builder.append("and lower(pt.name_en) like lower(:name) ");
+            }
         }
         if (filter.getSortingType().equals(SortingType.HIGH_PRICE)) {
             builder.append("order by r.price DESC");
         } else if (filter.getSortingType().equals(SortingType.LOW_PRICE)) {
             builder.append("order by r.price ASC");
         } else if (filter.getSortingType().equals(SortingType.RATING)) {
-            builder.append("order by r.rating");
+            builder.append("order by r.rating DESC");
         }
         Query query = entityManager.createNativeQuery(builder.toString());
         query.setParameter("region", filter.getRegion());
