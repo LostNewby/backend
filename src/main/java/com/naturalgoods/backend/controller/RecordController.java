@@ -44,6 +44,17 @@ public class RecordController {
     }
 
     @PostMapping(
+            path = "edit",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public void editRecord(@RequestPart RecordAddDto recordAddDto,
+                          @RequestPart MultipartFile file) {
+        recordAddDto.setPhoto(file);
+        recordService.recordEdit(recordAddDto);
+    }
+
+    @PostMapping(
             path = "{recordId}/image/upload",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE

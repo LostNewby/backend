@@ -118,10 +118,30 @@ public class RecordService {
         record.setPrice(productAddDto.getPrice());
         record.setLimit(productAddDto.getLimit());
         record.setRegion(productAddDto.getRegion());
+        record.setRating(BigDecimal.ZERO);
 
         record = recordRepository.save(record);
 
-        imageService.upload(record.getId(), productAddDto.getPhoto());
+
+        if(productAddDto.getPhoto()!=null){
+            imageService.upload(record.getId(), productAddDto.getPhoto());
+        }
+    }
+
+    public void recordEdit(RecordAddDto productAddDto) {
+        RecordEntity record = recordRepository.findById(productAddDto.getId()).get();
+        record.setProductTypeId(productAddDto.getProductTypeId());
+        record.setQuantity(productAddDto.getQuantity());
+        record.setDescription(productAddDto.getDescription());
+        record.setPrice(productAddDto.getPrice());
+        record.setLimit(productAddDto.getLimit());
+        record.setRegion(productAddDto.getRegion());
+
+        record = recordRepository.save(record);
+
+        if(productAddDto.getPhoto()!=null){
+            imageService.upload(record.getId(), productAddDto.getPhoto());
+        }
     }
 
     public static <T> Page<T> convertToPage(List<T> objectList, Pageable pageable) {

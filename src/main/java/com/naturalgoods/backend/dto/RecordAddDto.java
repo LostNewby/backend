@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class RecordAddDto {
+    private Long id;
     private Long productTypeId;
     private String description;
     private MultipartFile photo;
