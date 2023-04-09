@@ -7,6 +7,7 @@ import com.naturalgoods.backend.dto.CostumerListResponse;
 import com.naturalgoods.backend.dto.PurchaseListDto;
 import com.naturalgoods.backend.dto.PurchaseRequestDto;
 import com.naturalgoods.backend.dto.SellerListResponse;
+import com.naturalgoods.backend.productType.Unit;
 import com.naturalgoods.backend.record.RecordEntity;
 import com.naturalgoods.backend.record.RecordRepository;
 import com.naturalgoods.backend.util.SecurityUtils;
@@ -53,7 +54,7 @@ public class PurchaseService {
             costumerListResponse.setPrice(Long.valueOf(o[5].toString()));
             costumerListResponse.setCostumerPhone(o[6].toString());
             costumerListResponse.setPurchaseDate((Date) o[7]);
-            costumerListResponse.setUnit(o[8]==null? "":o[3].toString());
+            costumerListResponse.setUnit(o[8]==null? null : Unit.valueOf(o[8].toString()));
             costumerListResponse.setPurchaseId(Long.valueOf(o[9].toString()));
             return costumerListResponse;
         }).collect(Collectors.groupingBy(CostumerListResponse::getCostumer));
@@ -64,9 +65,9 @@ public class PurchaseService {
             Long price = 0L;
             Map<Language, String> names = new HashMap<>();
             for(CostumerListResponse listItem: items.getValue()){
-                names.put(Language.EN, listItem.getQuantity() + listItem.getUnit() + listItem.getPurchaseNameEn());
-                names.put(Language.RU, listItem.getQuantity() + listItem.getUnit() + listItem.getPurchaseNameRu());
-                names.put(Language.KK, listItem.getQuantity() + listItem.getUnit() + listItem.getPurchaseNameKz());
+                names.put(Language.EN, listItem.getQuantity() + " " + listItem.getUnit().getNameEn() + " " + listItem.getPurchaseNameEn());
+                names.put(Language.RU, listItem.getQuantity() + " " + listItem.getUnit().getNameRu() + " " + listItem.getPurchaseNameRu());
+                names.put(Language.KK, listItem.getQuantity() + " " + listItem.getUnit().getNameKz() + " " + listItem.getPurchaseNameKz());
                 price+=listItem.getPrice();
                 purchaseListDto.setCostumerPhone(listItem.getCostumerPhone());
                 purchaseListDto.setPurchaseDate(listItem.getPurchaseDate());
@@ -91,7 +92,7 @@ public class PurchaseService {
             sellerListResponse.setPrice(Long.valueOf(o[5].toString()));
             sellerListResponse.setCostumerPhone(o[6].toString());
             sellerListResponse.setPurchaseDate((Date) o[7]);
-            sellerListResponse.setUnit(o[8]==null? "":o[3].toString());
+            sellerListResponse.setUnit(o[8]==null? null : Unit.valueOf(o[8].toString()));
             sellerListResponse.setPurchaseId(Long.valueOf(o[9].toString()));
             return sellerListResponse;
         }).collect(Collectors.groupingBy(SellerListResponse::getSeller));
@@ -102,9 +103,9 @@ public class PurchaseService {
             Long price = 0L;
             Map<Language, String> names = new HashMap<>();
             for(SellerListResponse listItem: items.getValue()){
-                names.put(Language.EN, listItem.getQuantity() + listItem.getUnit() + listItem.getPurchaseNameEn());
-                names.put(Language.RU, listItem.getQuantity() + listItem.getUnit() + listItem.getPurchaseNameRu());
-                names.put(Language.KK, listItem.getQuantity() + listItem.getUnit() + listItem.getPurchaseNameKz());
+                names.put(Language.EN, listItem.getQuantity() + " " + listItem.getUnit().getNameEn() + " " + listItem.getPurchaseNameEn());
+                names.put(Language.RU, listItem.getQuantity() + " " + listItem.getUnit().getNameRu() + " " + listItem.getPurchaseNameRu());
+                names.put(Language.KK, listItem.getQuantity() + " " + listItem.getUnit().getNameKz() + " " + listItem.getPurchaseNameKz());
                 price+=listItem.getPrice();
                 purchaseListDto.setCostumerPhone(listItem.getCostumerPhone());
                 purchaseListDto.setPurchaseDate(listItem.getPurchaseDate());
