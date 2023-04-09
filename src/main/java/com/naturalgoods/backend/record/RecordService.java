@@ -4,7 +4,9 @@ import com.naturalgoods.backend.auth.Language;
 import com.naturalgoods.backend.dto.FilterDto;
 import com.naturalgoods.backend.dto.ProductCardsDto;
 import com.naturalgoods.backend.dto.RecordAddDto;
+import com.naturalgoods.backend.dto.RecordDto;
 import com.naturalgoods.backend.image.ImageService;
+import com.naturalgoods.backend.productType.ProductTypeRepository;
 import com.naturalgoods.backend.record.enums.SortingType;
 import com.naturalgoods.backend.util.SecurityUtils;
 import lombok.AllArgsConstructor;
@@ -29,6 +31,7 @@ public class RecordService {
     private final EntityManager entityManager;
     private final RecordRepository recordRepository;
     private final ImageService imageService;
+    private final ProductTypeRepository productTypeRepository;
 
     //TODO p->pt
     public Page<ProductCardsDto> filter(FilterDto filter, Integer page, Integer pageSize, Language lang) {
@@ -142,6 +145,31 @@ public class RecordService {
         if(productAddDto.getPhoto()!=null){
             imageService.upload(record.getId(), productAddDto.getPhoto());
         }
+    }
+
+
+    public List<RecordDto> getItemList(RecordStatus status){
+
+        List<RecordEntity> records;
+
+        if(status.equals(RecordStatus.NOT_FOR_SALES)){
+            records= recordRepository.findAllByUserIdAndQuantityLessThanLimit(SecurityUtils.getCurrentId());
+        }else{
+            records= recordRepository.findAllByUserIdAndQuantityMoreThanLimit(SecurityUtils.getCurrentId());
+        }
+
+        return records.stream().map(e->{
+            RecordDto recordDto = new RecordDto();
+            recordDto.setName(productTypeRepository.findById(e.getProductTypeId()).get().getNameEn());
+            recordDto.setDescription(e.getDescription());
+            recordDto.setLimit(e.getLimit());
+            recordDto.setPrice(e.getPrice());
+            recordDto.setRegion(e.getRegion());
+            recordDto.setId(e.getId());
+            recordDto.setQuantity(e.getQuantity());
+            recordDto.setPhoto(imageService.getDownloadLink(e.getId()));
+            return recordDto;
+        }).collect(Collectors.toList());
     }
 
     public static <T> Page<T> convertToPage(List<T> objectList, Pageable pageable) {

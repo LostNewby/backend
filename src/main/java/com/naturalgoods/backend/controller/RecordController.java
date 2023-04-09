@@ -1,12 +1,15 @@
 package com.naturalgoods.backend.controller;
 
 import com.naturalgoods.backend.api.ApiDataResponse;
+import com.naturalgoods.backend.api.ApiListResponse;
 import com.naturalgoods.backend.auth.Language;
 import com.naturalgoods.backend.dto.FilterDto;
 import com.naturalgoods.backend.dto.ProductCardsDto;
 import com.naturalgoods.backend.dto.RecordAddDto;
+import com.naturalgoods.backend.dto.RecordDto;
 import com.naturalgoods.backend.image.ImageService;
 import com.naturalgoods.backend.record.RecordService;
+import com.naturalgoods.backend.record.RecordStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -30,6 +33,11 @@ public class RecordController {
                                                                          @RequestParam Language lang) {
 
         return ResponseEntity.ok(new ApiDataResponse<>(recordService.filter(filter, page, pageSize, lang)));
+    }
+
+    @GetMapping("/getByStatus")
+    public ResponseEntity<ApiListResponse<RecordDto>> getByStatus(@RequestParam RecordStatus status){
+        return ResponseEntity.ok(new ApiListResponse<>(recordService.getItemList(status)));
     }
 
     @PostMapping(
