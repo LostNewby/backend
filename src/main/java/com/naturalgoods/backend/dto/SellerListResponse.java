@@ -1,5 +1,6 @@
 package com.naturalgoods.backend.dto;
 
+import com.naturalgoods.backend.productType.Unit;
 import lombok.Data;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ public class SellerListResponse {
     private String purchaseNameKz;
     private String purchaseNameRu;
     private String purchaseNameEn;
-    private String unit;
+    private Unit unit;
     private Date purchaseDate;
     private Long price;
     private Integer quantity;
