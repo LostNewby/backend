@@ -6,4 +6,5 @@ import lombok.Data;
 public class UserInfoDto {
     private String email;
     private String phone;
+    private Boolean isBlackList;
 }

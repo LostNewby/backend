@@ -15,5 +15,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "select u from UserEntity u where u.phoneNumber = ?1 or u.email = ?1")
     Optional<UserEntity> findByEmailOrPhoneNumber(String val);
 
-    List<UserEntity> findAllByRole(Role role);
+    List<UserEntity> findAllByRoleAndEmailLike(Role role, String email);
 }
