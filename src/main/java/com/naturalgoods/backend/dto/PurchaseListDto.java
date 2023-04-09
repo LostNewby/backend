@@ -8,6 +8,7 @@ import java.util.Map;
 
 @Data
 public class PurchaseListDto {
+    private Long id;
     private String email;
     private String costumerPhone;
     private Date purchaseDate;
