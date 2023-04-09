@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import javax.security.auth.message.AuthException;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +34,7 @@ public class AuthService {
     public JwtResponse login(@NotNull JwtRequest authRequest, Language language) throws AuthException {
         UserEntity user = userRepository.findByEmailOrPhoneNumber(authRequest.getLogin()).orElseThrow(() -> authExceptions.authExceptions(language));
 
-        if(!user.isActive()){
+        if (!user.isActive()) {
             throw authExceptions.blackList(language);
         }
 
@@ -53,11 +56,11 @@ public class AuthService {
     public void registration(RequestUserDto userDto, Language language) throws Exception {
         Optional<UserEntity> userValidation = userRepository.findByEmailOrPhoneNumber(userDto.getEmail());
 
-        if(userValidation.isPresent()){
+        if (userValidation.isPresent()) {
             throw authExceptions.alreadyExist(language);
         }
 
-        UserEntity user= RequestUserMapper.MAPPER.mapToEntity(userDto);
+        UserEntity user = RequestUserMapper.MAPPER.mapToEntity(userDto);
 
         user.setId(null);
 
@@ -66,7 +69,7 @@ public class AuthService {
         user.setRole(Role.USER);
         user.setActive(true);
 
-        user=userRepository.save(user);
+        user = userRepository.save(user);
 
         emailService.sendNewPassword(user.getFirstName(), password, user.getEmail(), language);
     }
@@ -87,7 +90,7 @@ public class AuthService {
         String password = PasswordUtils.getPassword(8);
         user.setPassword(passwordEncoder.encode(password));
 
-        user=userRepository.save(user);
+        user = userRepository.save(user);
 
         emailService.sendNewPassword(user.getFirstName(), password, user.getEmail(), language);
     }
@@ -103,9 +106,9 @@ public class AuthService {
     public void blackList(String detail, Language language) throws AuthException {
         UserEntity user = userRepository.findByEmailOrPhoneNumber(detail).orElseThrow(() -> authExceptions.authExceptions(language));
 
-        user.setActive(false);
+        user.setActive(!user.isActive());
 
-        user=userRepository.save(user);
+        user = userRepository.save(user);
 
         emailService.sendBanNotice(user.getFirstName(), user.getEmail());
     }
@@ -127,13 +130,26 @@ public class AuthService {
         return new JwtResponse(accessToken, refreshToken);
     }
 
-    public List<UserInfoDto> userList(Role role){
-        return userRepository.findAllByRole(role).stream().map(e->{
+    public List<UserInfoDto> userList(String email, Role role) {
+        return userRepository.findAllByRoleAndEmailLike(role, "%" + email + "%").stream().map(e -> {
             UserInfoDto userInfoDto = new UserInfoDto();
             userInfoDto.setEmail(e.getEmail());
             userInfoDto.setPhone(e.getPhoneNumber());
+            userInfoDto.setIsBlackList(!e.isActive());
             return userInfoDto;
         }).collect(Collectors.toList());
+    }
+
+    public void grantAdmin(String email) throws AuthException {
+        UserEntity user = userRepository.findByEmailOrPhoneNumber(email).orElseThrow(() -> authExceptions.authExceptions(Language.EN));
+
+        if (user.getRole().equals(Role.ADMIN)) {
+            user.setRole(Role.USER);
+        } else {
+            user.setRole(Role.ADMIN);
+        }
+
+        userRepository.save(user);
     }
 
 }
