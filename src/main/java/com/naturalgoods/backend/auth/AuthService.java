@@ -148,7 +148,6 @@ public class AuthService {
         } else {
             user.setRole(Role.ADMIN);
         }
-
         userRepository.save(user);
     }
 
