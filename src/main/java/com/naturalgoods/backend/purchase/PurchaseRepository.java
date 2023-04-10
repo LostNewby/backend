@@ -19,4 +19,6 @@ public interface PurchaseRepository extends JpaRepository<PurchaseEntity, Long> 
             "left join product_type pt on r.product_type_id=pt.id  " +
             "where pr.costumer_id = ?1 and pr.status = ?2", nativeQuery = true)
     List<Object[]> findByCustomerId(Long id, String purchaseStatus);
+
+    void deleteAllByRecordId(Long id);
 }

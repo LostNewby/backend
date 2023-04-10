@@ -6,6 +6,7 @@ import lombok.Data;
 public class RecordDto {
     private Long id;
     private String name;
+    private Long productTypeId;
     private String description;
     private String photo;
     private Long price;

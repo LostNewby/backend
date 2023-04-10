@@ -1,7 +1,6 @@
 package com.naturalgoods.backend.controller;
 
-import com.naturalgoods.backend.api.ApiDataResponse;
-import com.naturalgoods.backend.api.ApiListResponse;
+import com.naturalgoods.backend.api.*;
 import com.naturalgoods.backend.auth.Language;
 import com.naturalgoods.backend.dto.FilterDto;
 import com.naturalgoods.backend.dto.ProductCardsDto;
@@ -60,6 +59,16 @@ public class RecordController {
                           @RequestPart MultipartFile file) {
         recordAddDto.setPhoto(file);
         recordService.recordEdit(recordAddDto);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<ApiResponse> delete(@RequestParam Long recordId) {
+        try {
+            recordService.deleteRecord(recordId);
+            return ResponseEntity.ok(ApiEmptyResponse.create());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiErrorResponse.create(e.getMessage()));
+        }
     }
 
     @PostMapping(
