@@ -7,6 +7,8 @@ import com.naturalgoods.backend.dto.RecordAddDto;
 import com.naturalgoods.backend.dto.RecordDto;
 import com.naturalgoods.backend.image.ImageService;
 import com.naturalgoods.backend.productType.ProductTypeRepository;
+import com.naturalgoods.backend.purchase.PurchaseRepository;
+import com.naturalgoods.backend.rating.RatingRepository;
 import com.naturalgoods.backend.record.enums.SortingType;
 import com.naturalgoods.backend.util.SecurityUtils;
 import lombok.AllArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,8 @@ public class RecordService {
     private final RecordRepository recordRepository;
     private final ImageService imageService;
     private final ProductTypeRepository productTypeRepository;
+    private final PurchaseRepository purchaseRepository;
+    private final RatingRepository ratingRepository;
 
     //TODO p->pt
     public Page<ProductCardsDto> filter(FilterDto filter, Integer page, Integer pageSize, Language lang) {
@@ -160,6 +165,7 @@ public class RecordService {
 
         return records.stream().map(e->{
             RecordDto recordDto = new RecordDto();
+            recordDto.setProductTypeId(e.getProductTypeId());
             recordDto.setName(productTypeRepository.findById(e.getProductTypeId()).get().getNameEn());
             recordDto.setDescription(e.getDescription());
             recordDto.setLimit(e.getLimit());
@@ -170,6 +176,16 @@ public class RecordService {
             recordDto.setPhoto(imageService.getDownloadLink(e.getId()));
             return recordDto;
         }).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteRecord(Long recordId) throws Exception {
+        if(!recordRepository.findById(recordId).get().getUserId().equals(SecurityUtils.getCurrentId())){
+            throw new Exception("Not owned product");
+        }
+        recordRepository.deleteById(recordId);
+        purchaseRepository.deleteAllByRecordId(recordId);
+        ratingRepository.deleteAllByRecordId(recordId);
     }
 
     public static <T> Page<T> convertToPage(List<T> objectList, Pageable pageable) {

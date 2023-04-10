@@ -10,4 +10,6 @@ public interface RatingRepository extends JpaRepository<RatingEntity, Long> {
 
     @Query(value = "select r.*, u.first_name from ratings r left join users u on r.user_id = u.id where r.record_id = ?1", nativeQuery=true)
     List<Object[]> findAllObjByRecordId(Long recordId);
+
+    void deleteAllByRecordId(Long id);
 }
