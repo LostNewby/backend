@@ -56,7 +56,7 @@ public class RecordController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public void editRecord(@RequestPart RecordAddDto recordAddDto,
-                          @RequestPart MultipartFile file) {
+                          @RequestPart(required = false) MultipartFile file) {
         recordAddDto.setPhoto(file);
         recordService.recordEdit(recordAddDto);
     }

@@ -51,7 +51,7 @@ public class RecordService {
             builder.append(" pt.name_en,");
         }
 
-        builder.append(" r.description, r.rating, r.price from records r left join product_type pt on pt.id = r.product_type_id left join product p on p.id = pt.product_id left join category c on c.id = p.category_id where lower(r.region) = lower(:region) and r.price >= :minPrice  ");
+        builder.append(" r.description, r.rating, r.price from records r left join product_type pt on pt.id = r.product_type_id left join product p on p.id = pt.product_id left join category c on c.id = p.category_id where lower(r.region) = lower(:region) and r.price >= :minPrice and quantity>=limit_to_buy ");
         if (!CollectionUtils.isEmpty(filter.getCategoryId()) && filter.getCategoryId().get(0)!=0L) {
             builder.append("and c.id in :category ");
         }
