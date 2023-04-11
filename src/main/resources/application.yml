@@ -32,6 +32,6 @@ mail:
   password: bYg9WmyT9Mm0rmZgEs4m
 
 jwtSecret: DCB38ABF33FA35ADF189F3C1476E4E2B111D78664224DACDC845F82357
-jwtExpirationMs: 9000000
+jwtExpirationMs: 864000000
 jwtRefreshExpirationMs: 86400000
 
