@@ -52,9 +52,9 @@ public class EmailService {
     }
 
     public void sendBanNotice(String name, String email) {
-        String text = "Добрый день, " + name + "! \n" +
+        String text = "Good afternoon, " + name + "! \n" +
                 "  \n" +
-                "Вы были добавлены в черный список AulFood!\n";
+                "You were black listed in AulFood!\n";
         try {
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
