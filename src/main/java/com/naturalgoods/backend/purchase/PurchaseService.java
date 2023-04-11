@@ -14,6 +14,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,8 @@ public class PurchaseService {
     private final PurchaseRepository purchaseRepository;
     private final RecordRepository recordRepository;
     private final UserRepository userRepository;
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
     @Transactional
     public void purchaseRequest(List<PurchaseRequestDto> requestDtoList) {
@@ -66,7 +70,7 @@ public class PurchaseService {
             names.put(Language.RU, items.getQuantity() + " " + items.getUnit().getNameRu() + " " + items.getPurchaseNameRu());
             names.put(Language.KK, items.getQuantity() + " " + items.getUnit().getNameKz() + " " + items.getPurchaseNameKz());
             purchaseListDto.setCostumerPhone(items.getCostumerPhone());
-            purchaseListDto.setPurchaseDate(items.getPurchaseDate());
+            purchaseListDto.setPurchaseDate(DATE_FORMAT.format(items.getPurchaseDate()));
 
             purchaseListDto.setPrice(items.getPrice()*items.getQuantity());
             purchaseListDto.setPurchaseName(names);
@@ -102,7 +106,7 @@ public class PurchaseService {
             names.put(Language.RU, items.getQuantity() + " " + items.getUnit().getNameRu() + " " + items.getPurchaseNameRu());
             names.put(Language.KK, items.getQuantity() + " " + items.getUnit().getNameKz() + " " + items.getPurchaseNameKz());
             purchaseListDto.setCostumerPhone(items.getCostumerPhone());
-            purchaseListDto.setPurchaseDate(items.getPurchaseDate());
+            purchaseListDto.setPurchaseDate(DATE_FORMAT.format(items.getPurchaseDate()));
 
             purchaseListDto.setPrice(items.getPrice()*items.getQuantity());
             purchaseListDto.setPurchaseName(names);
