@@ -59,7 +59,7 @@ public class EmailService {
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(fromMail);
-            helper.setSubject("Черный список");
+            helper.setSubject("Black list");
             helper.setTo(email);
             message.setText(text);
             emailSender.send(message);
