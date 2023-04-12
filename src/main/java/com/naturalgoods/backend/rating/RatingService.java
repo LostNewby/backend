@@ -25,7 +25,7 @@ public class RatingService {
         rating.setRecordId(requestDto.getRecordId());
         rating.setRating(requestDto.getRating());
         rating.setDescription(requestDto.getDescription());
-//        rating.setUserId(SecurityUtils.getCurrentId());
+        rating.setUserId(SecurityUtils.getCurrentId());
         rating.setUserId(3L);
         ratingRepository.save(rating);
 
