@@ -87,6 +87,7 @@ public class RecordService {
             }  else if(lang.equals(Language.EN)){
                 builder.append("order by pt.name_en ");
             }
+
         }
         Query query = entityManager.createNativeQuery(builder.toString());
         query.setParameter("region", filter.getRegion());
