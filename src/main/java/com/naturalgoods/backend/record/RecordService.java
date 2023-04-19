@@ -79,6 +79,14 @@ public class RecordService {
             builder.append("order by r.price ASC");
         } else if (filter.getSortingType().equals(SortingType.RATING)) {
             builder.append("order by r.rating DESC");
+        } else if (filter.getSortingType().equals(SortingType.NAME)) {
+            if(lang.equals(Language.RU)){
+                builder.append("order by pt.name_ru ");
+            } else if(lang.equals(Language.KK)){
+                builder.append("order by pt.name_kz ");
+            }  else if(lang.equals(Language.EN)){
+                builder.append("order by pt.name_en ");
+            }
         }
         Query query = entityManager.createNativeQuery(builder.toString());
         query.setParameter("region", filter.getRegion());
@@ -97,7 +105,7 @@ public class RecordService {
             query.setParameter("maxPrice", filter.getMaxPrice());
         }
         if (Objects.nonNull(filter.getName()) && !filter.getName().equals("")) {
-            query.setParameter("name", "%" + filter.getName() + "%");
+            query.setParameter("name", filter.getName() + "%");
         }
 
         List<ProductCardsDto> result = (List<ProductCardsDto>) query.getResultList().stream().map(o -> {
