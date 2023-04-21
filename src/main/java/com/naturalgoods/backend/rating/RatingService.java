@@ -26,7 +26,6 @@ public class RatingService {
         rating.setRating(requestDto.getRating());
         rating.setDescription(requestDto.getDescription());
         rating.setUserId(SecurityUtils.getCurrentId());
-        rating.setUserId(3L);
         ratingRepository.save(rating);
 
         List<RatingEntity> ratingList = ratingRepository.findAllByRecordId(requestDto.getRecordId());
