@@ -26,10 +26,10 @@ spring:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
 
-
+#need to fill
 mail:
-  username: alisher-zhakenov@mail.ru
-  password: bYg9WmyT9Mm0rmZgEs4m
+  username:
+  password:
 
 jwtSecret: DCB38ABF33FA35ADF189F3C1476E4E2B111D78664224DACDC845F82357
 jwtExpirationMs: 864000000
